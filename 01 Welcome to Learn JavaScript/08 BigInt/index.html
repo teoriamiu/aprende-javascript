@@ -1,8 +1,46 @@
 <!DOCTYPE html>
 <html>
 <body>
-<script>
   
+<h2>😉 ¡BigInt!</h2>
+  
+<script>
+// BigInt
+
+// Las primitivas de BigInt son una adición relativamente nueva de JavaScript, que permite realizar operaciones matemáticas en números fuera del rango permitido por Number. Para crear un BigInt, agrega n al final de un número. literal, o pasar un valor de string entero o numérico a la función BigInt().
+
+
+const myNumber = 9999999999999999;
+const myBigInt = 9999999999999999n;
+
+console.log(typeof myNumber);
+// > "number"
+
+console.log(typeof myBigInt);
+// > "bigint"
+
+console.log(myNumber);
+// > 10000000000000000
+
+console.log(myBigInt);
+// > 9999999999999999n
+
+// En este ejemplo, 9999999999999999 está fuera del rango de dígitos que se puede Se representa de forma segura por Number, lo que genera un error de redondeo.
+
+// Los valores de BigInt no heredan los métodos ni las propiedades del objeto Number. proporciona y no se pueden usar con los métodos del Math integrado de JavaScript proporciona. Lo más importante es que no puedes mezclar las primitivas BigInt y Number en operaciones aritméticas estándar:
+
+
+// console.log(9999999999999999n + 5);
+// > Uncaught TypeError: can't convert BigInt to number
+
+// Para realizar operaciones aritméticas con BigInts, debes definir ambos operandos como valores de BigInt:
+
+
+console.log( 9999999999999999 + 10 );  // Off by one
+// > 10000000000000010
+
+console.log( 9999999999999999n + 10n );
+// > 10000000000000009n
 </script>
 </body>
 </html>
