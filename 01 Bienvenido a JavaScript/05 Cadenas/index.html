@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>😃 ¡Cadenas!</h2>
+
+<script>
+// ===============================
+// Cadenas (strings)
+// ===============================
+
+// Cualquier conjunto de caracteres (letras, números,
+// símbolos, etc.) encerrado entre:
+// - comillas dobles   "
+// - comillas simples  '
+// - acentos graves    `
+// se considera una primitiva de cadena (string).
+
+console.log("Hello, World.");
+// > Hello, World.
+
+// "Hello, World." es una cadena primitiva.
+// El mismo resultado se obtiene usando
+// comillas simples o acentos graves:
+
+console.log('Hello, World.');
+// > Hello, World.
+
+console.log(`Hello, World.`);
+// > Hello, World.
+
+// Una cadena escrita directamente en el código
+// se denomina "cadena literal".
+//
+// Las comillas simples y dobles se comportan igual,
+// y una puede contener a la otra como carácter:
+
+console.log("I'm a string.");
+// > I'm a string.
+
+console.log('"A string," I said.');
+// > "A string," I said.
+
+// Si se usa dentro de la cadena el mismo carácter
+// que la cierra, la cadena se interrumpe y produce
+// un error de sintaxis:
+
+// console.log('"I'm a string," I said.');
+// > Uncaught SyntaxError
+
+// Para evitar esto, se puede "escapar" el carácter
+// usando una barra invertida (\):
+
+console.log('"I\'m a string," I said.');
+// > "I'm a string," I said.
+</script>
+
+<script>
+// ===============================
+// Concatenación
+// ===============================
+
+// Cuando se usa con cadenas (en lugar de números),
+// el operador + actúa como operador de concatenación,
+// uniendo dos o más cadenas en una sola:
+
+console.log("My" + " string.");
+// > My string.
+</script>
+
+<script>
+// ===============================
+// Literales de cadena y literales de plantilla
+// ===============================
+
+// Las comillas simples, dobles y los acentos graves
+// pueden usarse para crear cadenas.
+//
+// Sin embargo, los acentos graves (`) permiten
+// crear literales de plantilla (template literals).
+//
+// A diferencia de las cadenas normales, los literales
+// de plantilla permiten:
+// - cadenas de varias líneas
+// - interpolación de expresiones
+
+// Esto produce un error porque las cadenas normales
+// no pueden contener saltos de línea:
+
+// const myString = "This is a string.
+// with a new line";
+
+// En cambio, con un literal de plantilla sí es válido:
+
+const myString = `This is a string.`;
+
+console.log(myString);
+// > This is a string.
+
+// Los literales de plantilla permiten interpolar
+// expresiones usando la sintaxis ${ }.
+// El resultado de la expresión se inserta
+// directamente en la cadena final:
+
+console.log("The result is " + (2 + 4) + ".");
+// > The result is 6.
+
+console.log(`The result is ${2 + 4}.`);
+// > The result is 6.
+
+// ===============================
+// Plantillas etiquetadas (tagged templates)
+// ===============================
+
+// Un literal de plantilla puede pasarse a una función
+// especial llamada "función etiqueta".
+//
+// En este caso:
+// - El primer argumento es un array con las partes
+//   literales de la cadena
+// - Los argumentos siguientes son los valores
+//   de los marcadores de posición (${ })
+
+const myNoun = "template literal";
+
+function myTagFunction(myStrings, myPlaceholder) {
+  const myInitialString = myStrings[0];
+  console.log(`${myInitialString}modified ${myPlaceholder}.`);
+}
+
+// Al llamar a la función con un literal de plantilla,
+// JavaScript divide la cadena en partes y pasa los
+// valores automáticamente:
+
+myTagFunction`I'm a ${myNoun}.`;
+// > I'm a modified template literal.
+</script>
+
+</body>
+</html>
