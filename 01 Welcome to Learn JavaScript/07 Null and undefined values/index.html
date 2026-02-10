@@ -1,8 +1,77 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+<h2>😅 ¡Null and undefined values!</h2>
+
 <script>
-  
+// ===============================
+// Ausencia de valor en JavaScript
+// ===============================
+
+// JavaScript tiene varias formas de representar
+// la ausencia de un valor.
+// Las dos más comunes son:
+// - null
+// - undefined
+
+// ===============================
+// null
+// ===============================
+
+// La palabra clave null representa una ausencia
+// de valor asignada de forma intencional.
+//
+// Se usa cuando el desarrollador decide explícitamente
+// que una variable no debe contener ningún valor.
+
+// Aunque null es una primitiva,
+// el operador typeof devuelve "object".
+// Este es un error histórico presente desde
+// las primeras versiones de JavaScript
+// que se mantiene por compatibilidad con la Web.
+
+console.log(typeof null);
+// > "object"
+
+// Es común asignar null a una variable cuando:
+// - aún no tiene un valor válido
+// - se desea indicar "vacío" de forma explícita
+// - se quiere borrar una referencia anterior
 </script>
+
+<script>
+// ===============================
+// undefined
+// ===============================
+
+// undefined es un valor primitivo que indica
+// que una variable existe, pero aún no tiene
+// un valor asignado.
+//
+// Aparece automáticamente cuando:
+// - se declara una variable sin inicializar
+// - una función no devuelve un valor explícito
+// - se intenta acceder a una propiedad inexistente
+
+// Ejemplo: una función sin return explícito
+// devuelve undefined:
+
+function myFunction() {}
+
+console.log(myFunction());
+// > undefined
+
+// Una función también devuelve undefined
+// cuando la instrucción return no incluye un valor:
+
+const result = (function () {
+  return;
+}());
+
+console.log(result);
+// > undefined
+</script>
+
 </body>
 </html>
