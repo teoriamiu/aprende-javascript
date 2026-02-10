@@ -24,7 +24,7 @@
 // explícitamente un valor a un booleano,
 // según su "valor de verdad" (truthy o falsy):
 
-Boolean("A string literal");
+console.log(Boolean("A string literal"));
 // > true
 
 // Existen valores que se consideran falsy.
@@ -39,19 +39,19 @@ Boolean("A string literal");
 //
 // Todos los demás valores son truthy.
 
-Boolean(NaN);
+console.log(Boolean(NaN));
 // > false
 
-Boolean(-0);
+console.log(Boolean(-0));
 // > false
 
-Boolean(5);
+console.log(Boolean(5));
 // > true
 
 // Aunque la cadena "false" parece representar falsedad,
 // sigue siendo una cadena no vacía, por lo tanto es truthy:
 
-Boolean("false");
+console.log(Boolean("false"));
 // > true
 
 // ===============================
@@ -68,13 +68,18 @@ const falseObject = new Boolean(0);
 console.log(falseBoolean);
 // > false
 
+// ⚠️ Nota:
+// En algunas consolas (especialmente móviles),
+// los objetos Boolean se muestran como "Boolean true"
+// aunque su valor interno sea false.
+// Usá valueOf() para ver el valor real.
 console.log(falseObject);
 // > Boolean { false }
 
 // valueOf() devuelve el valor primitivo
 // contenido dentro del objeto Boolean:
 
-falseObject.valueOf();
+console.log(falseObject.valueOf());
 // > false
 
 // ===============================
