@@ -1,6 +1,65 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<p>JavaScript es responsable de la "capa interactiva" de una página web, que complementa la capa "estructural" que proporciona el lenguaje de marcado y la capa "presentacional" que proporciona CSS. JavaScript permite a los desarrolladores modificar la estructura y la presentación de una página agregando, quitando y alterando lenguaje de marcado y estilos en respuesta a cualquier combinación de interacción del usuario y lógica interna. JavaScript puede brindarte un gran nivel de control sobre el procesamiento y el comportamiento de una página web, y hasta te permite alterar algunos de los comportamientos integrados del navegador.</p>
+<script>
+// El objeto numérico
+
+// Cuando se pasa un valor a la función Number(), ese valor se convierte en el equivalente numérico.Por ejemplo, una cadena numérica da como resultado una cadena equivalente Número primitivo:
+  
+  
+console.log(Number("10")); 
+// > 10
+
+// Si pasas un valor de false o null a Number(), se muestra 0 y true.1
+
+
+console.log(Number(null)); 
+// > 0
+
+console.log(Number(false)); 
+// > 0
+
+console.log(Number(true)); 
+// > 1
+
+// Si un valor no se puede convertir, como en el caso de undefined o una string que contiene caracteres no numéricos, la función Number muestra NaN:
+  
+  
+console.log(Number(undefined)); 
+// > NaN
+
+console.log(Number("The number 3.")); 
+// > NaN
+
+// Como se detalla en la herencia prototípica, Es probable que no tengas motivos para usar el objeto Number como porque crea un objeto Number en lugar de un literal numérico.
+
+let numObject = new Number(15);
+
+console.log(numObject); 
+// > Number { 15 }
+
+// Este objeto se comporta como su valor asignado para operaciones matemáticas, pero falla en las comparaciones de igualdad estrictas con literales numéricos no coinciden sin proporcionar ningún beneficio práctico en comparación con un valor literal.
+
+let tenObject = new Number(10);
+
+console.log(tenObject + 5); 
+// > 15
+
+console.log(tenObject === 10); 
+// > false
+</script>
+<script>
+// Números enteros y flotantes
+
+// JavaScript solo tiene un tipo de número: IEEE 754 - 1985 de doble precisión de 64 bits números de punto flotante entre - 2 ^ 1024 y 2 ^ 1024. Antes de que JavaScript almacene cualquier número en la memoria, primero convierte ese número en un número binario de punto flotante, también llamado flotante.
+
+// Este almacenamiento de 64 bits(un bit de“ signo” positivo o negativo, 11 bits para un exponente y 52 bits para una fracción) puede causar errores de precisión con cualquier número de dígitos que no encajan en un rango permitido.Esta limitación es inherente al tipo de datos numérico de JavaScript.
+
+
+console.log(0.1 + 0.7);
+// > 0.7999999999999999
+
+// En su lugar, se puede almacenar un valor numérico como integer, un número de punto flotante sin una fracción entre -(2^53 − 1) y 2^53 − 1. Debido a que flota y los números enteros se almacenan de la misma manera, no hay diferencia práctica en cómo operan estos números. Sin embargo, recomendamos usar números enteros cuando posible para evitar errores de precisión.
+</script>
 </body>
 </html>
