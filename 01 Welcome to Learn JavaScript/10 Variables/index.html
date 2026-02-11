@@ -1,8 +1,330 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+<h2>😋 ¡Variables!</h2>
+
 <script>
-  
+// ===============================
+// ¿Qué es una variable?
+// ===============================
+
+// Una variable es una estructura de datos
+// que asigna un nombre (identificador)
+// a un valor.
+//
+// Puede contener cualquier tipo de dato.
+
+// ===============================
+// Reglas para los identificadores
+// ===============================
+
+// ✔ Pueden contener:
+// - Letras Unicode
+// - $
+// - _
+// - Dígitos (0-9)
+//
+// ✔ Deben comenzar con:
+// - Una letra
+// - _
+// - $
+//
+// ✖ No pueden:
+// - Contener espacios
+// - Comenzar con números
+// - Usar palabras reservadas
+// - Contener caracteres especiales (! . , / \ + - * =)
+
+
+// Ejemplo inválido:
+
+// let 1a = true;
+// > SyntaxError
+
+
+// ===============================
+// Convenciones recomendadas
+// ===============================
+
+// camelCase (variables y funciones)
+
+let camelCasedIdentifier = true;
+
+
+// PascalCase (clases)
+
+class MyClass {
+
+}
+
+
+// Los nombres deben:
+// - Ser claros
+// - No ser excesivamente largos
+// - No ser demasiado específicos
+
+
+// ===============================
+// Declaración de variables
+// ===============================
+
+// Se declaran con:
+// - let
+// - const
+// - var
+
+{
+let myVariable;
+}
+
+// En código moderno se recomienda usar let
+// en lugar de var.
+
+
+// ===============================
+// Inicialización
+// ===============================
+
+{
+let myVariable = 5;
+
+console.log(myVariable + myVariable);
+// > 10
+}
+
+
+// Declaración sin inicializar:
+
+{
+let myVariable;
+
+console.log(myVariable);
+// > undefined
+
+myVariable = 5;
+
+console.log(myVariable + myVariable);
+// > 10
+}
+
+
+// Diferencia entre:
+// - Variable declarada (undefined)
+// - Variable no declarada (ReferenceError)
+
+
+// ===============================
+// Reasignación
+// ===============================
+
+{
+let myVariable = true;
+
+console.log(myVariable);
+// > true
+
+myVariable = false;
+
+console.log(myVariable);
+// > false
+}
+
+
+{
+let myVariable = 10;
+
+myVariable = myVariable * myVariable;
+
+console.log(myVariable);
+// > 100
+}
+
+
+// Redeclaración con let genera error:
+
+// let myVariable = true;
+// let myVariable = false;
+// > SyntaxError
+
+
+// var permite redeclaración:
+
+{
+var myVariable = true;
+var myVariable = false;
+
+console.log(myVariable);
+// > false
+}
+
+
+// ===============================
+// const
+// ===============================
+
+// Debe inicializarse inmediatamente.
+// No puede reasignarse.
+
+{
+const myConstant = true;
+
+console.log(myConstant);
+// > true
+}
+
+
+// No se puede hacer esto:
+
+// const myConstant;
+// > SyntaxError
+
+
+{
+const myConstant = true;
+
+// myConstant = false;
+// > TypeError
+}
+
+
+// Objetos en const
+
+{
+const constantObject = { "firstvalue": true };
+
+constantObject.secondvalue = false;
+
+console.log(constantObject);
+// > { firstvalue: true, secondvalue: false }
+}
+
+// La referencia es inmutable.
+// El contenido puede cambiar.
+
+
+// ===============================
+// Alcance (Scope)
+// ===============================
+
+// El alcance determina
+// dónde está disponible una variable.
+
+
+// ===============================
+// Alcance de bloque (let / const)
+// ===============================
+
+{
+let scopedVariable = true;
+console.log(scopedVariable);
+}
+// > true
+
+// scopedVariable
+// > ReferenceError
+
+
+{
+const scopedConstant = false;
+}
+const scopedConstant = true;
+
+console.log(scopedConstant);
+// > true
+
+
+{
+let scopedVariable = false;
+{
+let scopedVariable = true;
+}
+console.log(scopedVariable);
+// > false
+}
+
+
+// ===============================
+// Alcance de función (var)
+// ===============================
+
+function myFunction() {
+    var scopedVariable = true;
+    return scopedVariable;
+}
+
+console.log(myFunction());
+// > true
+
+// scopedVariable
+// > ReferenceError
+
+
+// ===============================
+// Alcance global
+// ===============================
+
+var functionGlobal = true;
+let blockGlobal = true;
+
+{
+console.log(blockGlobal);
+console.log(functionGlobal);
+}
+
+
+// Variable global implícita
+
+function myFunction() {
+    globalVariable = "global";
+    return globalVariable;
+}
+
+console.log(myFunction());
+// > "global"
+
+console.log(globalVariable);
+// > "global"
+
+
+// ===============================
+// Elevación (Hoisting)
+// ===============================
+
+// var se eleva:
+
+console.log(hoistedVariable);
+// > undefined
+
+{
+var hoistedVariable;
+}
+
+
+// Solo se eleva la declaración,
+// no la inicialización.
+
+{
+var hoistedVariable = 2 + 2;
+console.log(hoistedVariable);
+// > 4
+}
+
+
+// let y const tienen
+// "Zona Muerta Temporal" (TDZ)
+
+{
+    // console.log(hoistedVariable);
+    let hoistedVariable;
+}
+// > ReferenceError
+
+
+// TDZ = período entre el inicio del bloque
+// y la declaración real de la variable.
+
 </script>
+
 </body>
 </html>

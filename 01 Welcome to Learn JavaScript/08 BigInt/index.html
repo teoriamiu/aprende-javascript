@@ -5,10 +5,19 @@
 <h2>😉 ¡BigInt!</h2>
   
 <script>
+// ===============================
 // BigInt
+// ===============================
 
-// Las primitivas de BigInt son una adición relativamente nueva de JavaScript, que permite realizar operaciones matemáticas en números fuera del rango permitido por Number. Para crear un BigInt, agrega n al final de un número. literal, o pasar un valor de string entero o numérico a la función BigInt().
+// BigInt es un tipo de dato primitivo relativamente
+// reciente en JavaScript.
+//
+// Permite trabajar con números enteros que están
+// fuera del rango seguro del tipo Number.
 
+// Para crear un BigInt se puede:
+// - agregar la letra "n" al final de un literal numérico
+// - usar la función BigInt() con un valor entero válido
 
 const myNumber = 9999999999999999;
 const myBigInt = 9999999999999999n;
@@ -19,28 +28,46 @@ console.log(typeof myNumber);
 console.log(typeof myBigInt);
 // > "bigint"
 
+// Debido a las limitaciones del tipo Number,
+// este valor no puede representarse con precisión
+// y se produce un error de redondeo:
+
 console.log(myNumber);
 // > 10000000000000000
+
+// En cambio, BigInt conserva el valor exacto:
 
 console.log(myBigInt);
 // > 9999999999999999n
 
-// En este ejemplo, 9999999999999999 está fuera del rango de dígitos que se puede Se representa de forma segura por Number, lo que genera un error de redondeo.
+// El número 9999999999999999 está fuera del rango
+// de enteros seguros de Number
+// (entre -(2^53 − 1) y 2^53 − 1).
 
-// Los valores de BigInt no heredan los métodos ni las propiedades del objeto Number. proporciona y no se pueden usar con los métodos del Math integrado de JavaScript proporciona. Lo más importante es que no puedes mezclar las primitivas BigInt y Number en operaciones aritméticas estándar:
+// ===============================
+// Limitaciones de BigInt
+// ===============================
 
+// Los valores BigInt:
+// - no heredan métodos del objeto Number
+// - no pueden usarse con Math
+// - no pueden mezclarse con Number
+//   en operaciones aritméticas estándar
+
+// Mezclar BigInt y Number produce un error:
 
 // console.log(9999999999999999n + 5);
 // > Uncaught TypeError: can't convert BigInt to number
 
-// Para realizar operaciones aritméticas con BigInts, debes definir ambos operandos como valores de BigInt:
+// Para operar correctamente con BigInt,
+// ambos operandos deben ser BigInt:
 
+console.log(9999999999999999 + 10);
+// > 10000000000000010 (resultado incorrecto por redondeo)
 
-console.log( 9999999999999999 + 10 );  // Off by one
-// > 10000000000000010
-
-console.log( 9999999999999999n + 10n );
+console.log(9999999999999999n + 10n);
 // > 10000000000000009n
 </script>
+
 </body>
 </html>

@@ -1,8 +1,142 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+<h2>😊 ¡Symbol!</h2>
+
 <script>
-  
+// ===============================
+// Symbol
+// ===============================
+
+// Symbol es un tipo de dato primitivo introducido en ES6.
+//
+// Representa un valor único e irrepetible.
+// Ningún símbolo es igual a otro, incluso si
+// fueron creados con la misma descripción.
+
+// Comparación con strings:
+
+console.log(String() === String());
+// > true
+
+console.log(String("My string.") === String("My string."));
+// > true
+
+// Comparación con símbolos:
+
+console.log(Symbol() === Symbol());
+// > false
+
+// ===============================
+// Symbol como clave única
+// ===============================
+
+// Los símbolos pueden usarse como claves
+// de propiedades en objetos.
+//
+// Esto evita colisiones accidentales
+// con otras propiedades.
+
+{
+const mySymbol = Symbol("Desc");
+
+const myObject = {};
+myObject[mySymbol] = "propSymbol";
+
+console.log(myObject);
+}
+// > Object { Symbol("Desc"): "propSymbol" }
+
+// ===============================
+// Descripción del Symbol
+// ===============================
+
+// Symbol() puede recibir una descripción.
+// Esta descripción es solo informativa
+// y no afecta su unicidad.
+
+Symbol("My symbol.") === Symbol("My symbol.");
+// > false
+
+{
+let mySymbol = Symbol("My symbol.");
+console.log(mySymbol.description);
+// > "My symbol."
+}
+
+// No se puede usar new con Symbol:
+
+// mySymbol = new Symbol();
+// > Uncaught TypeError: Symbol is not a constructor
+
+// ===============================
+// Enumerabilidad
+// ===============================
+
+// Las propiedades con clave Symbol
+// no aparecen en iteraciones normales.
+//
+// Para acceder a ellas se usa:
+
+// Object.getOwnPropertySymbols(obj)
+
+// ===============================
+// Symbol.for()
+// ===============================
+
+// Symbol.for() usa un registro global
+// de símbolos compartidos.
+//
+// Si la clave ya existe,
+// devuelve el mismo símbolo.
+
+let sharedSymbol = Symbol.for("My key.");
+
+console.log(sharedSymbol === Symbol.for("My key."));
+// > true
+
+console.log(Symbol("String") === Symbol("String"));
+// > false
+
+console.log(("String") === Symbol.for("String"));
+// > false
+
+console.log(Symbol.for("String") === Symbol.for("String"));
+// > true
+
+// Para recuperar la clave
+// de un símbolo global:
+
+let mySymbol = Symbol.for("Key.");
+
+console.log(Symbol.keyFor(mySymbol));
+// > "Key."
+
+// ===============================
+// Símbolos conocidos
+// ===============================
+
+// Existen símbolos estáticos en el objeto Symbol.
+// Se llaman "well-known symbols".
+//
+// Permiten modificar comportamientos internos
+// del lenguaje de forma controlada.
+
+/*
+console.log(Symbol);
+> asyncIterator: Symbol(Symbol.asyncIterator)
+> hasInstance: Symbol("Symbol.hasInstance")
+> iterator: Symbol(Symbol.iterator)
+> match: Symbol("Symbol.match")
+> replace: Symbol("Symbol.replace")
+...
+*/
+
+// Estos símbolos funcionan como
+// puntos de extensión del lenguaje.
+
 </script>
+
 </body>
 </html>
