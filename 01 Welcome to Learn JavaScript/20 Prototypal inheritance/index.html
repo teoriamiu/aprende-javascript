@@ -1,8 +1,121 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🤩 ¡Herencia prototípica!</h2>
 <script>
-  
+Herencia prototípica
+
+Al igual que otros tipos de datos, un hereda propiedades y métodos de un prototipo integrado de Object, lo que significa que el objeto resultante contiene tanto las propiedades que definiste como una propiedad prototipo que contiene los métodos heredados del prototipo:
+
+
+let myObject = {
+    'booleanValue' : true
+};
+
+myObject;
+> Object { booleanValue: true }
+    booleanValue: true
+    [[prototype]]: Object { … }
+            __defineGetter__: function __defineGetter__()
+            __defineSetter__: function __defineSetter__()
+            __lookupGetter__: function __lookupGetter__()
+            __lookupSetter__: function __lookupSetter__()
+            __proto__: …
+                constructor: function Object()
+                hasOwnProperty: function hasOwnProperty()
+                isPrototypeOf: function isPrototypeOf()
+                propertyIsEnumerable: function propertyIsEnumerable()
+                toLocaleString: function toLocaleString()
+                toString: function toString()
+                valueOf: function valueOf()
+                <get __proto__()>: function __proto__()
+                <set __proto__()>: function __proto__()
+No está diseñado para que se acceda a las propiedades de prototipo de forma directa con una clave de propiedad. Como Como puedes ver en el ejemplo anterior, esto está implícito en el [[prototype]] o la notación <prototype> que se usa en los navegadores consolas para desarrolladores y fuentes documentación para la clave de propiedad del prototipo:
+
+
+// Chrome:
+let emptyObject = {};
+
+emptyObject;
+> {}
+  [[prototype]]: Object
+
+// Firefox:
+let emptyObject = {};
+
+emptyObject;
+> Object {  }
+  <prototype>: Object { … }
+Si bien todos los navegadores comunes usan __proto__ como estándar de facto, este no es estandarizada formalmente y debe evitarse en el código de producción.
+
+
+let emptyObject = {};
+
+emptyObject.__proto__;
+> Object { … }
+    __defineGetter__: function __defineGetter__()
+    __defineSetter__: function __defineSetter__()
+    __lookupGetter__: function __lookupGetter__()
+    __lookupSetter__: function __lookupSetter__()
+    __proto__:
+        constructor: function Object()
+        hasOwnProperty: function hasOwnProperty()
+        isPrototypeOf: function isPrototypeOf()
+        propertyIsEnumerable: function propertyIsEnumerable()
+        toLocaleString: function toLocaleString()
+        toString: function toString()
+        valueOf: function valueOf()
+        <get __proto__()>: function __proto__()
+        <set __proto__()>: function __proto__()
+En su lugar, puedes acceder directamente al [[Prototype]] de un objeto y modificarlo con Object.getPrototypeOf() y Object.setPrototypeOf() integrados métodos:
+
+
+let myObj = { "value" : 5 };
+let protoParent = { "protoValue" : true };
+
+myObj;
+Object { value: 5 }
+    value: 5
+    <prototype>: Object { … }
+
+Object.getPrototypeOf( myObj );
+> Object { … }
+    __defineGetter__: function __defineGetter__()
+    __defineSetter__: function __defineSetter__()
+    __lookupGetter__: function __lookupGetter__()
+    __lookupSetter__: function __lookupSetter__()
+    __proto__:
+    constructor: function Object()
+    hasOwnProperty: function hasOwnProperty()
+    isPrototypeOf: function isPrototypeOf()
+    propertyIsEnumerable: function propertyIsEnumerable()
+    toLocaleString: function toLocaleString()
+    toString: function toString()
+    valueOf: function valueOf()
+    <get __proto__()>: function __proto__()
+    <set __proto__()>: function __proto__()
+
+Object.setPrototypeOf( myObj, protoParent );
+> Object { value: 5 }
+    value: 5
+    <prototype>: Object { protoValue: true }
+Para diferenciar entre las propiedades heredadas y las definidas por el autor, el método estas últimas generalmente se denominan “propiedades propias” del objeto.
+
+El método Object.hasOwn() integrado muestra true si la propiedad especificada. es una propiedad directa del objeto y false si la propiedad es heredada o no existe. Siempre que sea posible, usa Object.hasOwn(). en lugar del método hasOwnProperty() heredado, que no admite Object.create()
+
+
+let myObject = {
+    'myValue' : 100
+};
+
+Object.hasOwn( myObject, 'myValue' );
+> true
+
+myObject.__proto__; // The Object prototype inherited by `myObject` is present:
+> Object { … }
+
+Object.hasOwn( myObject, '__proto__' ); // The Object prototype inherited by `myObject` is not an "own property:"
+> false
 </script>
 </body>
 </html>

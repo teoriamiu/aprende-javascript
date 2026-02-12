@@ -1,8 +1,107 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😚 ¡La palabra clave de retorno!</h2>
 <script>
-  
+La palabra clave de retorno
+
+Usa return para especificar el valor que la función debe producir como resultado final. Cuando el intérprete llega a una sentencia return, la función que la contiene termina de inmediato y el valor especificado se muestra en el contexto al que se llamó a la función:
+
+
+const myFunction = function() {
+   return 2 + 2;
+}
+
+myFunction();
+> 4
+Una función que muestra un valor se puede tratar de manera eficaz como los datos que contiene, de manera similar a una variable:
+
+
+const myFunction = function() {
+   return 2 + 2;
+}
+
+myFunction() + myFunction();
+> 8
+Una sentencia return sin una expresión finaliza la función y muestra undefined
+
+
+const myFunction = function() {
+   return;
+}
+
+myFunction();
+> undefined
+Debido a que la palabra clave return indica el final de una función, cualquier código que sigue no se ejecuta una return detectada:
+
+const myFunction = function() {
+   return true;
+   console.log( "This is a string." );
+}
+
+myFunction();
+> true
+Además, el código después de una sentencia return detectada puede generar una (pero no es un error) en las funciones consolas de desarrollo:
+
+const myFunction = function() {
+   return true;
+   console.log( "This is a string." );
+}
+> unreachable code after return statement
+
+myFunction();
+> true
+Nuevamente, esto solo se aplica a una sentencia return que se encuentra durante el la ejecución de la función, no ningún código que siga a una sentencia return de forma secuencial:
+
+const myFunction = function( myParameter ) {
+   if( myParameter === undefined ) {
+    return "This is the result.";
+   }
+   return "This is the alternate result.";
+}
+
+myFunction();
+> "This is the result."
+
+myFunction( true );
+> "This is the alternate result."
+El cortocircuito de una función con un return anticipado puede permitir un código más conciso que una sola sentencia return al final de una función. Por ejemplo, la siguiente función determina si un valor pasado es una cadena que contiene cinco o más caracteres. Si el valor pasado no es una cadena literal, el código que cuenta los caracteres no es necesario, y la función puede mostrar un resultado false de inmediato:
+
+function myFunction( myString ) {
+   if( typeof myString !== "string" ) {
+    return false;
+   }
+   if( myString.length >= 5 ) {
+    return true;
+   } else {
+    return false;
+   }
+}
+
+myFunction( 100 );
+> false
+
+myFunction( "St" );
+> false
+
+myFunction( "String." );
+> true
+Las expresiones de función de flecha son únicas en cuanto a que la palabra clave return se implica cuando el cuerpo de una función de flecha contiene una sola expresión y no tiene sintaxis de bloque:
+
+const myFunction = () => 2 + 2;
+
+myFunction();
+> 4
+Si usas sintaxis de bloque para definir el cuerpo de la función flecha, se crea un elemento return explícito. es obligatorio, incluso si el cuerpo de la función solo contiene una sola expresión:
+
+const myFunction = () => { 2 + 2 };
+
+myFunction();
+> undefined
+const myFunction = () => { return 2 + 2 };
+
+myFunction();
+> 4
 </script>
 </body>
 </html>

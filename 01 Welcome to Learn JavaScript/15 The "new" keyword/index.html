@@ -1,8 +1,73 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😙 ¡La palabra clave nueva!</h2>
 <script>
-  
+La palabra clave nueva
+
+Si llamas a una función con new, se crea un objeto nuevo con la función llamada como el "constructor" para ese objeto:
+
+
+function MyFunction() {}
+const myObject = new MyFunction();
+
+typeof myObject;
+> "object"`
+Esto permite que una "función de constructor" proporcione una plantilla para la creación de objetos que siguen el mismo patrón estructural:
+
+
+function MyFunction() {
+  this.myProperty = true;
+}
+const myObject = new MyFunction();
+
+myObject.myProperty;
+> true
+El valor de this dentro de un constructor “función” se refiere al objeto que se crea, lo que permite que este se propague con propiedades y métodos al momento de la creación. Esto permite que los la creación de objetos que contienen valores de datos y cualquier método necesario para actuar sobre ellos esos datos como una sola unidad portátil, un concepto llamado “encapsulamiento”:
+
+
+function MyFunction( myArgument ) {
+    this.myValue = myArgument;
+    this.doubleMyValue = () => myArgument * 2;
+}
+const myObject = new MyFunction( 10 );
+
+myObject.myValue;
+> 10
+
+myObject.doubleMyValue();
+> 20
+this hace referencia al contexto de ejecución actual de una función, lo que significa que una función de constructor sigue las mismas reglas para el valor de this que cualquier otra función. Por ejemplo, una función previsto como constructor, usa vinculación global para el valor de this cuando se invoca de forma independiente:
+
+
+function MyFunction() {
+    console.log( this  );
+}
+const myObject = new MyFunction();
+> MyFunction { }
+
+MyFunction(); // Global `this` binding outside of strict mode is `globalThis`
+> Window { … }
+
+(function() {
+    "use strict";
+    function MyFunction() {
+            console.log( this );
+    }
+    MyFunction();  // Global `this` binding inside of strict mode is `undefined`
+}());
+> undefined
+Es convencional usar mayúsculas en el primer carácter del nombre de la función de constructor. de asignación de nombres, siguiendo el patrón de nomenclatura establecido por funciones de fábrica. Aunque a veces veas que los términos se usan de forma indistinta, de constructores: funciones destinadas a actuar en un edificio recientemente construido, cuando se invoca con la palabra clave new, difiere de “Factory funciones," que explícitamente return un cuando se invoca normalmente:
+
+
+function myFunction( myArgument = false ) {
+  return { "myProperty" : myArgument };
+}
+const myObject = myFunction( true );
+
+myObject;
+> Object { myProperty: true }
+Aunque los principios subyacentes son los mismos, los casos de uso de los modelos Las funciones de constructor se entregan mejor con la más completa La sintaxis de Class incluida en ES6
 </script>
 </body>
 </html>

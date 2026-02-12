@@ -1,8 +1,156 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😘 ¡Funciones!</h2>
 <script>
-  
+Funciones
+
+Una función es un bloque de sentencias modular y reutilizable que se usa para realizar tareas relacionadas, como calcular y mostrar un valor basado en argumentos proporcionados a la función. Al igual que con todos los valores no primitivos, las funciones son objetos. Son objetos únicos en los que se pueden llamar ejecutar el código, pasar datos en forma de argumentos y devuelve un valor.
+
+Las funciones se consideran "primera clase" objetos, lo que significa que, a pesar de su comportamiento único, se pueden usar en todos los los mismos contextos que cualquier otro objeto JavaScript. Por ejemplo, una función puede ser asignado a una variable, pasado como argumento a otras funciones y devueltos por otras funciones.
+
+function myFunction() {
+   console.log( "This is my function." );
+};
+Una función definida como una propiedad de un objeto es generalmente se denomina "método". Al igual que con las variables declaradas con var, las declaraciones de función realizadas fuera de una función contenedora se agregan al objeto global como métodos.
+
+Declaraciones de funciones
+Una declaración de función (también llamada “declaración de función” o “definición de función”) Crea una función con nombre que puede invocarse en otro lugar del alcance que la contiene. Las declaraciones de función consisten en la palabra clave function seguida de un identificador, una lista de parámetros separados por comas encerrados entre paréntesis y un instrucción de bloque llamada “cuerpo de la función”. A menudo encontrarás declaraciones de funciones que no terminar con punto y coma; ya que una declaración de función es una instrucción y punto y coma se puede inferir por medio de ASI.
+
+function myFunction() {
+   console.log( "This is my function." );
+};
+
+myFunction();
+> "This is my function."
+Como un obstáculo de las primeras decisiones de diseño de JavaScript, las declaraciones de funciones están sujetas a la misma elevación heredada como variables declaradas con var, lo que significa que una declaración de función se eleva a la parte superior de su alcance y puede llamarse antes de la declaración como resultado, ya sea que ese alcance esté regido por el modo estricto o no:
+
+"use strict";
+{
+    myFunction();
+    function myFunction() {
+        console.log( "This is my function." );
+    };
+}
+> "This is my function."
+Fuera del modo estricto, función las declaraciones usan el alcance heredado de JavaScript comportamiento, lo que significa que el alcance de una declaración de función se define con su alcance más cercano función:
+
+function myFunction() {
+    function myNestedFunction() {
+        console.log( "This is my nested function." );
+    }
+    myNestedFunction();
+};
+
+myFunction();
+> "This is my nested function."
+
+myNestedFunction();
+>Uncaught ReferenceError: myNestedFunction is not defined
+En el modo estricto, las declaraciones de funciones el alcance se establece en su bloque de contenedor más cercano, como sucede con las variables declaradas mediante let o const:
+
+"use strict";
+{
+    function myFunction() {
+        console.log( "This is my function." );
+    };
+}
+
+myFunction();
+> Uncaught ReferenceError: myFunction is not defined
+Llamada a función
+Al igual que con las variables, el identificador que se usa cuando se declara una función actúa como un un nombre simbólico para un valor. Hacer referencia a una función solo con el identificador muestra solo el objeto de la función y no ejecuta la función que contiene:
+
+function myFunction() {
+   console.log( "This is my function." );
+};
+
+myFunction;
+> myFunction() {
+   console.log( "This is my function." );
+}
+Para ejecutar el código dentro del cuerpo de la función, llama (o invoca) la función. siguiendo el nombre de la función con un par de paréntesis coincidente:
+
+function myFunction() {
+    console.log( "My function has been executed." );
+}
+
+myFunction();
+> "My function has been executed."
+Los parámetros en la definición de la función actúan como variables de marcador de posición para valores que se pueden pasar al cuerpo de la función cuando se la llama. Los valores entre paréntesis cuando se llama a una función son “argumentos” (aunque es posible que veas “argumentos” que se usa para describir argumentos y parámetros en algunas documentación):
+
+function myFunction( myParameter ) {
+   console.log( `The value is: ${ myParameter }.` );
+};
+
+myFunction( "this string" );
+> "The value is: this string."
+Si se omite un argumento esperado, el parámetro resultante contiene un valor undefined, porque el parámetro se declara en el cuerpo de la función, pero no inicializado con un valor:
+
+function myFunction( myParameter ) {
+   console.log( `The value is: ${ myParameter }.` );
+};
+
+myFunction();
+> "The value is: undefined."
+Puedes establecer valores de parámetros predeterminados si los inicializas de la misma manera que lo harías inicializamos una variable: un operador de asignación (=) seguido de un valor. Si especificar un argumento para esa función, ese valor nuevo anula valor predeterminado:
+
+function myFunction( myParameter = "omitted" ) {
+   console.log( `The value is: ${ myParameter }.` );
+};
+
+myFunction( "this string" );
+> "The value is: this string."
+
+myFunction();
+> "The value is: omitted."
+El cuerpo de una no flecha también tiene acceso a una entrada no indexada, Un objeto arguments similar a un array que contenga cualquier valor pasado como argumento, ya sea que la función definición especifica los parámetros:
+
+function myFunction() {
+   console.log( arguments );
+};
+
+myFunction( 3, true, "My string" );
+> Arguments { 0: 3, 1: true, 2: "My string", … }
+Funciones variadicas
+El objeto arguments te permite crear funciones variables básicas, que pueden aceptar una cantidad variable de argumentos:
+
+function myFunction() {
+    let result = "";
+    for (let i = 0; i < arguments.length; i++) {
+        result += arguments[i] + " - ";
+    }
+    console.log( result );
+};
+
+myFunction( "My first string", "My second string", "my third string" );\
+> "My first string - My second string - my third string - "
+Sin embargo, este enfoque para las funciones variádicas rara vez se utiliza en el JavaScript moderno. en el desarrollo de software. Es más común usar el framework más moderno y legible sintaxis del parámetro rest lo que crea un parámetro con nombre inicializado como un array que contiene argumentos aparte de los especificados explícitamente:
+
+function myFunction( mySeparator, ...myStrings ) {
+  console.log( myStrings.join( mySeparator ) );
+};
+
+myFunction( " - ", "My first string", "My second string", "my third string" );
+> "My first string - My second string - my third string"
+A diferencia de la vinculación de parameter, la sintaxis del parámetro rest funciona como se espera con los parámetros de la función de flecha:
+
+function myOuterFunction() {
+    let myInnerArrowFunction = ( ...myParams ) => {
+        console.log( myParams[ 0 ] );
+    }
+    myInnerArrowFunction( true );
+};
+
+myOuterFunction( false );
+> true
+
+let myArrowFunction = ( ...myParams ) => {
+    console.log( myParams[ 0 ] );
+};
+
+myArrowFunction( true );
+> true
 </script>
 </body>
 </html>

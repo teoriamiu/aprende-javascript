@@ -1,8 +1,911 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😍 ¡Flujo de control!</h2>
 <script>
-  
+/*# Flujo de control
+
+El *flujo de control* es el orden en el que el intérprete de JavaScript ejecuta las sentencias. Si un script no incluye sentencias que alteren su flujo, se ejecuta de principio a fin, una línea a la vez. Las *estructuras de control* se utilizan para determinar si un conjunto de sentencias se ejecuta o no según un conjunto definido de criterios, ejecutar un conjunto de sentencias repetidamente, o interrumpir una secuencia de sentencias.
+
+## Sentencias condicionales
+
+Las sentencias condicionales determinan si se debe ejecutar código basándose en una o más condiciones. Una sentencia condicional ejecuta el código que contiene si la condición (o conjunto de condiciones) asociada se evalúa como `true`. De lo contrario, el código se omite.
+
+### `if`...`else`
+
+Una sentencia `if` evalúa una condición dentro de los paréntesis coincidentes que la siguen. Si la condición dentro de los paréntesis se evalúa como `true`, se ejecuta la sentencia o sentencia de bloque que sigue a los paréntesis coincidentes:*/
+
+{
+    if ( true ) console.log( "Verdadero." );
+    //> "Verdadero."
+}
+{
+    if ( true ) {
+        const miCadena = "Verdadero.";
+        console.log( miCadena );
+    }
+    //> "Verdadero."
+}
+
+//Si la condición dentro de los paréntesis se evalúa como `false`, la sentencia que la sigue se ignora:
+
+    if ( false ) console.log( "Verdadero." );
+
+//Una palabra clave `else` inmediatamente después de una sentencia `if` y su sentencia ejecutada condicionalmente especifica la sentencia a ejecutar si la condición `if` se evalúa como `false`:
+
+{
+    if ( false ) console.log( "Verdadero." );
+    else console.log( "Falso." );
+    //> "Falso."
+}
+
+//Para encadenar múltiples sentencias `if`, puedes hacer que la sentencia ejecutada condicionalmente después de `else` sea otra sentencia `if`:
+
+{
+    const miCondicion = 2;
+    if ( miCondicion === 5 ) console.log( "Cinco." );
+    else if ( miCondicion === 2 ) console.log( "Dos." );
+}
+
+//Recomendamos encarecidamente usar la sintaxis de sentencia de bloque después de los condicionales para mejorar la legibilidad, pero las cláusulas `else if` son a menudo una excepción a esto:
+
+{
+    const miCondicion = 2;
+    if ( miCondicion === 5 ) {
+        console.log( "Cinco." );
+    } else if ( miCondicion === 3 ) {
+        console.log( "Tres." );
+    } else {
+        console.log( "Ni cinco ni tres." );
+    }
+   // > "Ni cinco ni tres."
+}
+
+//#### Operador ternario
+
+//`if` ejecuta condicionalmente una sentencia. El operador ternario (más precisamente, aunque menos comúnmente, llamado *operador condicional ternario*) es una abreviatura utilizada para ejecutar condicionalmente una expresión. Como su nombre indica, el operador ternario es el único operador de JavaScript que utiliza tres operandos:
+
+//- Una condición a evaluar, seguida de un signo de interrogación (`?`).
+//- La expresión a ejecutar si la condición se evalúa como `true`, seguida de dos puntos (`:`).
+//- La expresión a ejecutar si la condición se evalúa como `false`.
+
+//Esto se usa frecuentemente para establecer o pasar un valor condicionalmente:
+
+{
+    const miPrimerResultado  = true  ? "Primer valor." : "Segundo valor.";
+    const miSegundoResultado = false ? "Primer valor." : "Segundo valor.";
+
+    console.log(miPrimerResultado);
+   // > "Primer valor."
+
+    console.log(miSegundoResultado);
+    //> "Segundo valor."
+}
+
+//### `switch`...`case`
+
+//Utiliza la sentencia `switch` para comparar el valor de una expresión con una lista de valores potenciales definidos mediante una o más palabras clave `case`. Esta sintaxis es inusual porque proviene de algunas de las primeras decisiones de diseño de JavaScript. La sintaxis `switch`...`case` utiliza la palabra clave `switch`, seguida de una expresión a evaluar encerrada entre paréntesis, seguida de un par de llaves coincidentes. El cuerpo del `switch` puede contener palabras clave `case`, normalmente una o más, seguidas de una expresión o valor, seguidas de dos puntos (`:`).
+
+//Cuando el intérprete alcanza un `case` con un valor que coincide con la expresión que se está evaluando en los paréntesis después de la palabra clave `switch`, ejecuta cualquier sentencia que siga a esa cláusula `case`:
+
+{
+    switch ( 2 + 2 === 4 ) {
+      case false:
+        console.log( "Falso." );
+      case true:
+        console.log( "Verdadero." );
+    }
+    //> "Verdadero."
+}
+
+//Todas las sentencias que siguen al `case` coincidente se ejecutan, incluso si están encerradas en una sentencia de bloque:
+
+{
+    switch ( 2 + 2 === 4 ) {
+        case false:
+        console.log( "Falso." );
+      case true:
+        let miVariable = "Verdadero.";
+        console.log( miVariable );
+
+    }
+    //> "Verdadero."
+}
+
+//Un problema de usar `switch...case` es que, después de encontrar una coincidencia, el intérprete de JavaScript ejecuta *cualquier* sentencia que siga al `case` coincidente, incluso aquellas dentro de otras cláusulas `case`. Esto se llama "caer a través" (fall through) al siguiente `case`:
+
+{
+    switch ( 2 + 2 === 7 ) {
+        case false:
+        console.log( "Falso." );
+      case true:
+        console.log( "Verdadero." );
+    }
+   // > "Falso."
+   // > "Verdadero."
+}
+
+//Para evitar la caída a través, finaliza cada caso con la palabra clave `break`, que detiene inmediatamente la evaluación del cuerpo del `switch`:
+
+{
+    switch ( 2 + 2 === 7 ) {
+        case false:
+        console.log( "Falso." );
+        break;
+      case true:
+        console.log( "Verdadero." );
+        break;
+    }
+    //> "Falso."
+}
+
+//Si ningún `case` coincide con el valor condicional, el `switch` selecciona la cláusula `default` si existe:
+
+{
+    switch ( 20 ) {
+        case 5:
+        console.log( "El valor era cinco." );
+        break;
+      case 10:
+        console.log( "El valor era diez." );
+        break;
+      default:
+        console.log( "El valor era algo inesperado." );
+    }
+    //> "El valor era algo inesperado."
+}
+
+//Sin embargo, la caída a través también se aplica a `default`, lo que puede llevar a resultados inesperados. Para solucionarlo, termina tu sentencia `default` con `break`, o colócala al final de la lista de casos.
+{
+    switch ( 20 ) {
+      default:
+        console.log( "El valor era algo inesperado." );
+      case 10:
+        console.log( "El valor era diez." );
+        break;
+      case 5:
+        console.log( "El valor era cinco." );
+        break;
+    }
+   // > "El valor era algo inesperado."
+   // > "El valor era diez."
+}
+
+//Debido a que las cláusulas `case` no requieren una sentencia de bloque para agrupar múltiples sentencias, las cláusulas `case` y `default` no crean ámbito léxico por sí mismas:
+
+{
+   /* let miVariable;
+    switch ( true ) {
+      case true:
+        let miVariable = "Verdadero.";
+        break;
+      default:
+        let miVariable = "Falso.";
+        break;
+    }
+    //> Uncaught SyntaxError: redeclaration of let miVariable */
+}
+
+//Para gestionar el ámbito, utiliza sentencias de bloque:
+
+{
+    let miVariable;
+
+switch (true) {
+    case true: {
+        miVariable = "Verdadero.";
+        console.log(miVariable);
+        break;
+    }
+    default: {
+        miVariable = "Falso.";
+        console.log(miVariable);
+        break;
+    }
+}
+}
+
+//## Bucles e iteración
+
+//Los bucles te permiten repetir un conjunto de sentencias mientras se cumpla una condición, o hasta que se cumpla una condición. Utiliza bucles para ejecutar un conjunto de instrucciones un número fijo de veces, hasta lograr un resultado específico, o hasta que el intérprete llegue al final de una estructura de datos iterable (por ejemplo, el elemento final en un array, mapa o conjunto, la propiedad final de un objeto, o el último carácter en una cadena).
+
+//Los bucles interrumpen el flujo de ejecución "de arriba abajo" de un script al iterar sobre un conjunto de sentencias hasta que se cumplan una o más condiciones, o dejen de cumplirse, dependiendo de la sintaxis utilizada para crear el bucle. Después de que el bucle termina, la ejecución continúa con las sentencias que le siguen. En el siguiente ejemplo, las sentencias en el cuerpo del bucle se ejecutan tres veces antes de que el intérprete continúe:
+
+{
+    let contadorIteraciones = 0;
+    console.log( "Antes del bucle." );
+    while( contadorIteraciones < 9 ) {
+      contadorIteraciones++;
+      console.log( "Iteración del bucle." );
+    }
+    console.log( "Continuando." );
+    /*> "Antes del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    > "Continuando."*/
+}
+
+//Si las condiciones no se pueden cumplir durante la ejecución del bucle, el bucle continúa indefinidamente. Estos *bucles infinitos* son un error de programación común que puede hacer que el hilo de ejecución principal se pause indefinidamente, o incluso bloquear una pestaña del navegador.
+
+//El siguiente ejemplo se ejecuta mientras el valor booleano `true` permanezca `true`. Debido a que los valores booleanos son inmutables, esto crea un bucle infinito.
+//**Advertencia:** ejecutar el siguiente código puede ralentizar tu navegador o bloquear la pestaña actual del navegador.
+
+    console.log( "Antes del bucle." );
+    /*while( true === 3) {
+        console.log( "Iteración del bucle." );
+    }
+    > "Antes del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    > "Iteración del bucle."
+    ...*/
+
+//Evita dejar bucles infinitos en tu código de producción. Si accidentalmente creas uno durante el desarrollo, puedes solucionarlo cerrando la pestaña del navegador en la que se está ejecutando, actualizando tu código para que el bucle ya no sea infinito, y volviendo a abrir la página.
+
+//### `while`
+
+//Un bucle `while` se crea usando la palabra clave `while` seguida de un par de paréntesis coincidentes que contienen una condición a evaluar. Si la condición especificada inicialmente se evalúa como `true`, se ejecuta la sentencia (o sentencia de bloque) que sigue a esos paréntesis. Si no, el bucle nunca se ejecuta. Después de cada iteración, la condición se reevalúa, y si aún es `true`, el bucle se repite.
+
+{
+    let contadorIteraciones = 0;
+    while( contadorIteraciones < 3 ) {
+      contadorIteraciones++;
+      console.log( `Bucle ${ contadorIteraciones }.` );
+    }
+    /*> "Bucle 1."
+    > "Bucle 2."
+    > "Bucle 3."*/
+}
+
+//Si el intérprete encuentra una sentencia `continue` en un bucle `while`, detiene esa iteración, reevalúa la condición y continúa el bucle si es posible:
+
+{
+    let contadorIteraciones = 0;
+    while( contadorIteraciones <= 5 ) {
+      contadorIteraciones++;
+      if( contadorIteraciones === 3 ) {
+        continue;
+      }
+      console.log( `Bucle ${ contadorIteraciones }.` );
+    }
+    console.log( "Bucle terminado." );
+   /* > "Bucle 1."
+    > "Bucle 2."
+    > "Bucle 4."
+    > "Bucle 5."
+    > "Bucle 6."
+    > "Bucle terminado."*/
+}
+
+//Si el intérprete encuentra una sentencia `break` en un bucle `while`, esa iteración se detiene y la condición no se reevalúa, permitiendo que el intérprete continúe:
+
+{
+    let contadorIteraciones = 1;
+while( contadorIteraciones <= 5 ) {
+      if( contadorIteraciones === 3 ) {
+        console.log( `Iteración omitida.` );
+        break;
+      }
+      console.log( `Bucle ${ contadorIteraciones }.` );
+      contadorIteraciones++;
+    }
+    console.log( "Bucle terminado." );
+}
+    /*> "Bucle 1."
+    > "Bucle 2."
+    > "Iteración omitida."
+    > "Bucle terminado."*/
+
+//Puedes usar `while` para iterar un número específico de veces, como se ve en el ejemplo anterior, pero el caso de uso más común para `while` es un bucle de longitud indeterminada:
+
+{
+    let aleatorio = () => Math.floor( Math.random() * 10 );
+    let numeroAleatorio = aleatorio();
+    while( numeroAleatorio !== 3 ){
+      console.log( `El número no es ${ numeroAleatorio }.` );
+      numeroAleatorio = aleatorio();
+    }
+    console.log( `El número correcto, ${ numeroAleatorio }, fue encontrado.` );
+    /*> "El número no es 0."
+    > "El número no es 6."
+    > "El número no es 1."
+    > "El número no es 8."
+    > "El número correcto, 3, fue encontrado."*/
+    }
+
+//### `do`...`while`
+
+//`do`...`while` es una variante del bucle `while` en la que la evaluación condicional ocurre al *final* de cada iteración del bucle. Esto significa que el cuerpo del bucle siempre se ejecuta al menos una vez.
+
+//Para crear un bucle `do`...`while`, usa la palabra clave `do` seguida de la sentencia (o sentencia de bloque) a ejecutar en cada iteración del bucle. Inmediatamente después de esa sentencia, añade `while` y los paréntesis coincidentes que contienen la condición a evaluar. Cuando esta condición deje de evaluarse como `true`, el bucle termina.
+
+{
+    let contadorIteraciones = 1;
+    do {
+      console.log( `Bucle ${ contadorIteraciones }.` );
+      contadorIteraciones++;
+    } while ( contadorIteraciones < 3 );
+   /* > "Bucle 1."
+    > "Bucle 2."
+    > "Bucle 3."*/
+}
+
+//Al igual que con un bucle `while`, el caso de uso más común para `do`...`while` es un bucle de longitud indeterminada:
+
+{
+    let numeroAleatorio;
+    do {
+      numeroAleatorio = ( () => Math.floor( Math.random() * 10 ) )();
+      console.log( `¿Es el número ${ numeroAleatorio }?` );
+    } while ( numeroAleatorio !== 3 );
+    console.log( `Sí, ${ numeroAleatorio } era el número correcto.` );
+    /*> "¿Es el número 9?"
+    > "¿Es el número 2?"
+    > "¿Es el número 8?"
+    > "¿Es el número 2?"
+    > "¿Es el número 3?"
+    > "Sí, 3 era el número correcto."*/
+}
+
+//### `for`
+
+//Utiliza bucles `for` para iterar sobre una cantidad conocida. En bases de código heredadas, esto se usaba frecuentemente para iterar sobre los elementos de un array.
+
+//Para crear un bucle `for`, usa la palabra clave `for`, seguida de un conjunto de paréntesis que acepta las siguientes tres expresiones en orden y separadas por punto y coma:
+
+//1. Una expresión a evaluar cuando el bucle comienza
+//2. Una condición que determina si el bucle debe continuar
+//3. Una expresión a ejecutar al concluir cada bucle
+
+//Después de estos paréntesis, añade la sentencia (típicamente una sentencia de bloque) a ejecutar durante el bucle.
+
+    for( let i = 0; i < 3; i++ ) {
+      console.log( "Este bucle se ejecutará tres veces." )
+    }
+
+//La primera expresión inicializa una variable que actúa como contador. Esta expresión se evalúa una vez, antes de la primera iteración del bucle. Puedes inicializar esta variable usando `let` (o `var`, históricamente) como cualquier otra variable, y su ámbito es el cuerpo del bucle. Estas variables pueden tener cualquier identificador válido, pero frecuentemente se llaman `i` por "iteración" o "índice". Esto parece contradecir las mejores prácticas establecidas para nombres de identificadores predecibles, pero la convención está lo suficientemente establecida como para ser clara para otros desarrolladores de un vistazo. Debido a que las colecciones indexadas tienen base cero, estas variables casi siempre tienen un valor inicial de `0`.
+
+//Al igual que con otras formas de bucle, la condición es una expresión que determina si el bucle debe ejecutarse. Esto se usa más a menudo para establecer un límite superior para el contador de iteración. El intérprete evalúa la condición antes de ejecutar el bucle `for` por primera vez. Si la condición no se evalúa inicialmente como `true`, el cuerpo del bucle no se ejecuta.
+
+//La expresión final se ejecuta al final de cada iteración del bucle. Típicamente se usa para incrementar el identificador en uno.
+
+//Verás más comúnmente bucles `for` iterando sobre arrays en bases de código más antiguas. En estos casos, la condición especificada para continuar el bucle es un contador de iteración menor o igual a la longitud del array que se está iterando. La variable utilizada para rastrear el contador de iteración actual se usa para buscar el valor asociado con ese índice en el array, permitiendo que cada elemento del array sea procesado en orden:
+
+{
+    var miArray = [ true, false, true ];
+    for( let i = 0; i < miArray.length; i++ ) {
+      console.log( miArray[ i ] );
+    }
+    /*> true
+    > false
+    > true*/
+}
+
+//Este enfoque ha caído en desuso en favor de enfoques más modernos para recorrer estructuras de datos iterables.
+
+//#### `for` \[...\] `of` \[...\]
+
+//Usa bucles `for`...`of`... para iterar sobre los valores almacenados en una estructura de datos iterable, como un array, conjunto (set) o mapa (map).
+
+//Un bucle `for`...`of`... utiliza la palabra clave `for` seguida de un conjunto de paréntesis que contiene una variable, seguida de `of`, y luego la estructura de datos sobre la que se itera. La variable puede ser una declaración realizada aquí usando `let`, `const` o `var`, una variable declarada previamente dentro del ámbito actual, una propiedad de objeto, o una instancia de asignación por desestructuración. Contiene el valor del elemento que corresponde con la iteración actual del bucle.
+
+{
+    const miIterable = [ true, false, true ];
+    for( const miElemento of miIterable ) {
+      console.log( miElemento );
+    }
+    /*> true
+    > false
+    > true*/
+}
+
+//En este ejemplo, usar `const` para `miElemento` funciona aunque a `miElemento` se le asigna un nuevo valor en cada iteración del bucle. Esto se debe a que las variables declaradas con `let` o `const` tienen ámbito en la sentencia de bloque dentro del bucle. La variable se inicializa al inicio de cada iteración y se elimina al final de esa iteración.
+
+//#### `for`...`in`...
+
+//Usa bucles `for`...`in`... para iterar sobre las propiedades enumerables de un objeto, incluyendo propiedades enumerables heredadas. Al igual que un bucle `for`...`of`..., un bucle `for`...`in`... utiliza la palabra clave `for` seguida de un conjunto de paréntesis que contiene una variable que contiene el valor de la clave de la propiedad correspondiente a la iteración actual del bucle. Esta variable va seguida de la palabra clave `in`, y luego el objeto sobre el que se itera:
+
+{
+    const miObjeto = { "miPropiedad" : true, "miSegundaPropiedad" : false };
+    for( const miClave in miObjeto ) {
+      console.log( miClave );
+    }
+    //> "miPropiedad"
+    //> "miSegundaPropiedad"
+}
+
+//Nuevamente, a pesar de que el valor de `miClave` cambia con cada iteración del bucle, puedes usar `const` sin error porque la variable se descarta efectivamente al final de cada iteración y se recrea al inicio.
+
+//El valor asociado con cada clave de propiedad no está directamente disponible en la sintaxis `for`...`in`... Sin embargo, debido a que el bucle tiene acceso a la clave de la propiedad en cada iteración, puedes usar esa clave para "buscar" su valor:
+
+{
+    const miObjeto = { "miPropiedad" : true, "miSegundaPropiedad" : false };
+    for( const miClave in miObjeto ) {
+      const miValor = miObjeto[ miClave ];
+      console.log( `${ miClave } : ${ miValor }` );
+    }
+    //> "miPropiedad : true"
+    //> "miSegundaPropiedad : false"
+}
+
+//Las propiedades heredadas de constructores incorporados son no enumerables, lo que significa que `for`...`in`... no itera a través de las propiedades heredadas del constructor `Object`. Sin embargo, se incluyen cualesquiera propiedades enumerables dentro de la cadena de prototipos del objeto:
+
+{
+    const miPrototipo = { "propiedadProto" : true };
+    const miObjeto = Object.create( miPrototipo, {
+        miPropiedad: {
+            value: true,
+            enumerable: true
+        }
+    });
+    for ( const miClave in miObjeto ) {
+      const miValor = miObjeto[ miClave ];
+      console.log( `${ miClave } : ${ miValor }` );
+    }
+    //> "miPropiedad : true"
+   // > "propiedadProto : true"
+}
+
+//JavaScript proporciona métodos integrados para determinar si una propiedad es una propiedad directa del objeto en lugar de una propiedad en la cadena de prototipos del objeto: el método moderno `Object.hasOwn()` y el método heredado `Object.prototype.hasOwnProperty()`. Estos métodos evalúan si una propiedad especificada es heredada (o no declarada), devolviendo `true` solo para las propiedades inmediatas de un objeto especificado:
+
+{
+    const miPrototipo = { "propiedadProto" : true };
+    const miObjeto = Object.create( miPrototipo, {
+        miPropiedad: {
+            value: true,
+            enumerable: true
+        }
+    });
+    for ( const miClave in miObjeto ) {
+      const miValor = miObjeto[ miClave ];
+      if ( Object.hasOwn( miObjeto, miClave ) ) {
+        console.log( `${ miClave } : ${ miValor }` );
+      }
+    }
+    //> "miPropiedad : true"
+}
+
+//También hay tres métodos estáticos que devuelven un Array compuesto por las claves enumerables de un Objeto (`Object.keys()`), los valores enumerables (`Object.values()`), o los pares clave-valor enumerables (`Object.entries()`):
+
+{
+    const miObjeto = { "miPropiedad" : true, "miSegundaPropiedad" : false };
+    Object.keys( miObjeto );
+    //> Array [ "miPropiedad", "miSegundaPropiedad" ]
+}
+
+//Esto te permite iterar sobre las claves, valores o pares clave-valor de un Objeto (usando asignación por desestructuración) sin incluir las propiedades que pertenecen al prototipo de ese Objeto:
+
+{
+    const miPrototipo = { "propiedadProto" : "Valor de propiedad no enumerable." };
+    const miObjeto = Object.create( miPrototipo, {
+        miPropiedad: {
+            value: "Valor de propiedad enumerable.",
+            enumerable: true
+        }
+    });
+
+    for ( const claveProp of Object.keys( miObjeto ) ) {
+      console.log( claveProp );
+    }
+   // > "miPropiedad"
+
+    for ( const valorProp of Object.values( miObjeto ) ) {
+      console.log( valorProp );
+    }
+   // > "Valor de propiedad enumerable."
+
+    for ( const [ claveProp, valorProp ] of Object.entries( miObjeto ) ) {
+      console.log( `${ claveProp } : ${ valorProp }` );
+    }
+   // > "miPropiedad : Valor de propiedad enumerable."
+}
+
+//#### `forEach()`
+
+//Los métodos `forEach()` proporcionados por los constructores Array, Map, Set y NodeList ofrecen una abreviatura útil para iterar sobre una estructura de datos en el contexto de una función de callback. A diferencia de otras formas de bucle, un bucle creado con cualquier método `forEach()` no puede interrumpirse usando `break` o `continue`.
+
+//`forEach` es un método que posee el prototipo de cada estructura de datos. Cada método `forEach` espera una función de callback como argumento, aunque varían ligeramente en cuanto a los argumentos incluidos cuando se llama a esa función. Un segundo argumento opcional especifica un valor `this` para usar como contexto de invocación para la función de callback.
+
+//La función de callback utilizada con `Array.forEach` proporciona parámetros que contienen el valor del elemento actual, el índice del elemento actual y el array sobre el cual se invocó el método `forEach`:
+
+{
+    const miArray = [ true, false ];
+    miArray.forEach( ( miElemento, i, arrayOriginal ) => {
+      console.log( i, miElemento, arrayOriginal  );
+    });
+    //> 0 true Array(3) [ true, false ]
+   // > 1 false Array(3) [ true, false ]
+}
+
+//La función de callback utilizada con `Map.forEach` proporciona parámetros que contienen el valor asociado con el elemento actual, la clave asociada con el elemento actual y el Map sobre el cual se invocó el método `forEach`:
+
+{
+    const miMapa = new Map([
+      ['miClave', true],
+      ['miSegundaClave', false ],
+    ]);
+    miMapa.forEach( ( miValor, miClave, mapaOriginal ) => {
+        console.log( miValor, miClave, mapaOriginal  );
+    });
+    //> true "miClave" Map { miClave → true, miSegundaClave → false }
+    //> false "miSegundaClave" Map { miClave → true, miSegundaClave → false }
+}
+
+//Un callback de `Set.forEach` incluye parámetros similares. Debido a que Set no tiene índices o claves distintas de los valores, el segundo argumento proporciona un valor redundante e ignorable, estrictamente para mantener la sintaxis consistente con los otros métodos `forEach`:
+
+{
+    const miSet = new Set([ true, false ]);
+    miSet.forEach( ( miValor, miClave, setOriginal ) => {
+      console.log( miValor, miClave, setOriginal  );
+    });
+    //> true true Set [ true, false ]
+    //> false false Set [ true, false ]
+}
+
+//### Iteradores
+
+//Un *iterable* es cualquier estructura de datos compuesta por elementos individuales que se puede iterar utilizando los enfoques detallados anteriormente. Un *iterador* es un objeto iterable que sigue el *protocolo de iterador*, lo que significa que debe implementar un método `next()` que avance a través de los elementos que contiene uno a la vez, cada vez que se llama a ese método, devolviendo un objeto para cada elemento secuencial en un formato específico.
+
+//Las estructuras de datos iterables integradas de JavaScript (como Array, Map y Set) no son iteradores en sí mismas, pero todas heredan un método `iterator`, accesible mediante el Símbolo conocido `@@iterator`, que devuelve un objeto iterador creado a partir de la estructura de datos iterable:
+
+{
+    const miIterable = [ 1, 2, 3 ];
+    const miIterador = miIterable[ Symbol.iterator ]();
+
+    console.log(miIterable);
+    //> (3) [1, 2, 3]
+
+    console.log(miIterador);
+    //> Array Iterator {}
+}
+
+Llamar al método `next()` en un iterador avanza a través de los elementos que contiene uno a la vez, y cada llamada devuelve un objeto que contiene dos propiedades: `value`, que contiene el valor del elemento actual, y `done`, un booleano que nos indica si el iterador ha pasado el último elemento en la estructura de datos. El valor de `done` es `true` solo cuando una llamada a `next()` resulta en un intento de acceder a un elemento más allá del último elemento en el iterador.
+
+    const miIterable = [ 1, 2, 3 ];
+    const miIterador = miIterable[ Symbol.iterator ]();
+
+    miIterador.next();
+    > Object { value: 1, done: false }
+
+    miIterador.next();
+    > Object { value: 2, done: false }
+
+    miIterador.next();
+    > Object { value: 3, done: false }
+
+    miIterador.next();
+    > Object { value: undefined, done: true }
+
+#### Funciones generadoras
+
+Utiliza la palabra clave `function*` (nótese el asterisco) para declarar una función generadora o definir una expresión de función generadora:
+
+    function* miFuncionGeneradora() { };
+
+Al igual que los iteradores, las funciones generadoras mantienen estado. Llamar a una función generadora devuelve un nuevo objeto Generator pero no inmediatamente ejecuta el código en el cuerpo de la función:
+
+    function* miFuncionGeneradora() {
+      console.log( "Cuerpo de la función generadora." )
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador;
+    > Generator {  }
+
+    typeof miObjetoGenerador;
+    > "object"
+
+Los objetos Generator siguen el protocolo de iterador. El valor que devuelve cada llamada a `next()` en una función generadora está determinado por una expresión `yield`, que pausa la ejecución de la función generadora y devuelve el valor de la expresión que contiene la palabra clave `yield`. Las llamadas posteriores a `next()` continúan la ejecución de la función, pausándose en la siguiente expresión `yield` y devolviendo el valor asociado.
+
+    function* miFuncionGeneradora() {
+      yield "Mi primer valor producido.";
+      yield "Mi segundo valor producido.";
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador.next();
+    > Object { value: "Mi primer valor producido.", done: false }
+
+    miObjetoGenerador.next();
+    > Object { value: "Mi segundo valor producido.", done: false }
+
+Cuando se llama a `next()` después de que no se especifiquen más valores usando `yield`, `return` o `throw` (en caso de error), el resto del cuerpo de la función se ejecuta, y el objeto devuelto tiene un `value` de `undefined` y una propiedad `done` con valor `true`:
+
+    function* miFuncionGeneradora() {
+        console.log( "Inicio de la función generadora." );
+        yield "Primero";
+        console.log( "Segunda parte de la función generadora." );
+        yield "Segundo";
+        console.log( "Tercera parte de la función generadora." );
+        yield "Tercero";
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador.next();
+    > "Inicio de la función generadora."
+    > Object { value: "Primero", done: false }
+
+    miObjetoGenerador.next();
+    > "Segunda parte de la función generadora."
+    > Object { value: "Segundo", done: false }
+
+    miObjetoGenerador.next();
+    > "Tercera parte de la función generadora."
+    > Object { value: "Tercero", done: false }
+
+    miObjetoGenerador.next();
+    > Object { value: undefined, done: true }
+
+Usa `next()` solo en el objeto que devuelve la función generadora, no en la función generadora misma. De lo contrario, cada llamada a la función generadora crea un nuevo objeto Generator:
+
+    function* miFuncionGeneradora() {
+      yield "Primero";
+      yield "Segundo";
+    };
+
+    miFuncionGeneradora().next();
+    > Object { value: "Primero", done: false }
+
+    miFuncionGeneradora().next();
+    > Object { value: "Primero", done: false }
+
+Como con cualquier función, la función generadora se detiene cuando encuentra una palabra clave `return`. Luego devuelve un objeto al contexto invocador que contiene el valor retornado y una propiedad `done` con el valor `true`.
+
+    function* miFuncionGeneradora() {
+      yield 1;
+      yield 2;
+      return 3;
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador.next();
+    > Object { value: 1, done: false }
+
+    miObjetoGenerador.next();
+    > Object { value: 2, done: false }
+
+    miObjetoGenerador.next();
+    > Object { value: 3, done: true }
+
+Una expresión `yield` puede adoptar algunas de las semánticas de un identificador, permitiendo una "comunicación" bidireccional desde y hacia la porción suspendida de la función generadora. Cuando se pasa un valor al método `next()` de un generador como argumento, reemplaza el valor asociado con la expresión `yield` anterior y suspendida:
+
+    function* miFuncionGeneradora() {
+        const primerYield = yield;
+        yield primerYield + 10;
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador.next();
+    > Object { value: undefined, done: false }
+
+    miObjetoGenerador.next( 5 );
+    > Object { value: 15, done: false }
+
+Ten en cuenta que esto reemplaza la expresión completa asociada con el `yield` anterior, y no solo reasigna el valor del `yield` anterior al valor especificado en `next()`:
+
+    function* miFuncionGeneradora() {
+        const primerYield = yield;
+        const segundoYield = yield primerYield + 100;
+        yield segundoYield + 10;
+    };
+    const miObjetoGenerador = miFuncionGeneradora();
+
+    miObjetoGenerador.next();
+    > Object { value: undefined, done: false }
+
+    miObjetoGenerador.next( 10 ); // Puede pensarse como cambiar el valor de la variable `primerYield` a `10`
+    > Object { value: 110, done: false }
+
+    miObjetoGenerador.next( 20 ); // Puede pensarse como cambiar el valor de la variable `segundoYield` a `20`, _no_ `20 + 100;`
+    > Object { value: 30, done: false }
+
+Cualquier argumento pasado a la primera llamada a `next()` se ignora, porque no hay una expresión `yield` anterior que acepte ese valor. Como con cualquier otra función, los argumentos pasados a la llamada inicial de la función generadora están disponibles en todo el ámbito del cuerpo de la función generadora:
+
+    function* miFuncionGeneradora( valorInicial ) {
+        let nuevoValor = yield valorInicial + 1;
+        nuevoValor = yield nuevoValor + 10;
+        yield valorInicial + 20;
+    };
+    const miObjetoGenerador = miFuncionGeneradora( 2 );
+
+    miObjetoGenerador.next( 1 );
+    > Object { value: 3, done: false }
+
+    miObjetoGenerador.next( 5 );
+    > Object { value: 15, done: false }
+
+    miObjetoGenerador.next( 10 );
+    Object { value: 22, done: false }
+
+El operador `yield*` (nótese el asterisco) se utiliza con un iterable, como otra función generadora, para iterar sobre y producir cada valor que devuelve su operando:
+
+    function* miGeneradorSecundario() {
+      yield 2;
+      yield 3;
+    }
+
+    function* miGenerador() {
+      yield 1;
+      yield* miGeneradorSecundario();
+      yield 4;
+      return 5;
+    }
+
+    const miIterador = miGenerador();
+
+    miIterador.next();
+    > Object { value: 1, done: false }
+
+    miIterador.next();
+    > Object { value: 2, done: false }
+
+    miIterador.next();
+    > Object { value: 3, done: false }
+
+    miIterador.next();
+    > Object { value: 4, done: false }
+
+    miIterador.next();
+    > Object { value: 5, done: true }
+
+## JavaScript asíncrono
+
+Aunque JavaScript es fundamentalmente síncrono en su ejecución, existen mecanismos que permiten a los desarrolladores aprovechar el bucle de eventos para realizar tareas asíncronas.
+
+### Promesas
+
+Una Promesa (Promise) es un marcador de posición para un valor que no se conoce cuando se crea la promesa. Es un contenedor que dicta una operación asíncrona, los términos por los cuales la operación se considera un éxito o un fracaso, las acciones a tomar en cada caso y el valor resultante.
+
+Crea una instancia de Promise usando el operador `new` con la función constructora `Promise` incorporada. Este constructor acepta como argumento una función llamada *ejecutor*. Esa función ejecutora se utiliza típicamente para realizar una o más acciones asíncronas, y luego dictar los términos bajo los cuales la Promesa debe considerarse cumplida exitosamente o rechazada. Una Promesa se define como *pendiente* mientras la función ejecutora se está ejecutando. Después de que el ejecutor finaliza, una Promesa se considera *cumplida* (o *resuelta*, en algunas fuentes de documentación) si la función ejecutora y la acción asíncrona que realiza se completan exitosamente, y *rechazada* si la función ejecutora encuentra un error, o la acción asíncrona que se realiza falla. Después de que una Promesa es cumplida o rechazada, se considera *liquidada* (settled).
+
+    const miPromesa = new Promise( () => { });
+
+El constructor llama a la función ejecutora con dos argumentos. Esos argumentos son funciones que te permiten cumplir o rechazar manualmente la Promesa:
+
+    const miPromesa = new Promise( ( cumplir, rechazar ) => { });
+
+Las funciones utilizadas para cumplir o rechazar una Promesa se llaman con el valor resultante de la Promesa como argumento (típicamente un error para el rechazo):
+
+    const miPromesa = new Promise( ( cumplir, rechazar ) => {
+      const miResultado = true;
+      setTimeout(() => {
+        if( miResultado === true ) {
+            cumplir( "Esta Promesa fue exitosa." );    
+        } else {
+            rechazar( new Error( "Esta Promesa ha sido rechazada." ) );
+        }
+      }, 10000);
+    });
+
+    miPromesa;
+    > Promise { <state>: "pending" }
+
+    miPromesa;
+    > Promise { <state>: "fulfilled", <value>: "Esta Promesa fue exitosa." }
+
+#### Encadenamiento de Promesas
+
+El objeto Promise resultante puede ser procesado usando los métodos `then()`, `catch()` y `finally()` heredados del constructor Promise. Cada uno de estos métodos devuelve una Promesa, que inmediatamente puede ser procesada nuevamente con `then()`, `catch()` o `finally()`, permitiendo *encadenar* las Promesas resultantes.
+
+`then()` proporciona dos funciones de callback como argumentos. Usa la primera para cumplir la Promesa resultante, y la segunda para rechazarla. Ambos métodos aceptan un solo argumento que da a la Promesa resultante su valor.
+
+    const miPromesa = new Promise( ( cumplir, rechazar ) => {
+      const miResultado = true;
+      setTimeout(() => {
+        if( miResultado === true ) {
+            cumplir( "Esta Promesa fue cumplida." );    
+        } else {
+            rechazar( new Error( "Esta Promesa ha sido rechazada." ) );
+        }
+      }, 100);
+    });
+
+    miPromesa.then( resultadoExitoso => console.log( resultadoExitoso ), resultadoFallido => console.error( resultadoFallido ) );
+    > "Esta Promesa fue exitosa."
+
+También puedes usar `then()` para manejar solo el estado cumplido, y `catch` para manejar el estado rechazado. Llama a `catch` con un solo argumento que contiene el valor proporcionado en el método de rechazo de la Promesa:
+
+    const miPromesa = new Promise( ( cumplir, rechazar ) => {
+      const miResultado = false;
+      setTimeout(() => {
+        if( miResultado === true ) {
+            cumplir( "Esta Promesa fue cumplida." );    
+        } else {
+            rechazar( new Error( "Esta Promesa ha sido rechazada." ) );
+        }
+      }, 100);
+    });
+
+    miPromesa
+      .then( resultadoCumplido => console.log(resultadoCumplido ) )
+      .catch( resultadoRechazado => console.log( resultadoRechazado ) )
+      .finally( () => console.log( "La Promesa se ha liquidado." ) );
+    > "Error: Esta Promesa ha sido rechazada."
+    > "La Promesa se ha liquidado."
+
+A diferencia de `then` y `catch`, que permiten ejecutar una función manejadora cuando una Promesa es cumplida o rechazada, una función pasada como argumento al método `finally` se llama independientemente de si la Promesa fue cumplida o rechazada. La función manejadora se llama sin argumentos, porque no está destinada a trabajar con los valores pasados desde la Promesa, sino solo a ejecutar código después de que la Promesa esté completa.
+
+#### Concurrencia
+
+El constructor Promise proporciona cuatro métodos para trabajar con múltiples Promesas relacionadas, utilizando un iterable que contiene objetos Promise. Estos métodos devuelven cada uno una Promesa, que se cumple o rechaza según el estado de las Promesas que se le pasan. `Promise.all()`, por ejemplo, crea una Promesa que se cumple solo si cada Promesa pasada a ese método es cumplida:
+
+    const primeraPromesa  = new Promise( ( cumplir, rechazar ) => cumplir( "Exitosa. ") );
+    const segundaPromesa = new Promise( ( cumplir, rechazar ) => cumplir( "Exitosa. ") );
+    const terceraPromesa  = new Promise( ( cumplir, rechazar ) => cumplir( "Exitosa. ") );
+    const promesaFallida = new Promise( ( cumplir, rechazar ) => rechazar( "Fallida.") );
+    const promesasExitosas = [ primeraPromesa, segundaPromesa, terceraPromesa ];
+    const unaPromesaFallida = [ promesaFallida, ...promesasExitosas ];
+
+    Promise.all( promesasExitosas )
+      .then( ( todosLosValores ) => {
+        console.log( todosLosValores );
+      })
+      .catch( ( valorFallido ) => {
+        console.error( valorFallido );
+      });
+    > Array(3) [ "Exitosa. ", "Exitosa. ", "Exitosa. " ]
+
+    Promise.all( unaPromesaFallida  )
+        .then( ( todosLosValores ) => {
+          console.log( todosLosValores );
+        })
+        .catch( ( valorFallido ) => {
+            console.error( valorFallido );
+        });
+    > "Fallida."
+
+Los métodos de concurrencia de Promise son los siguientes:
+
+`Promise.all()`
+:   Se cumple solo si todas las Promesas suministradas son cumplidas.
+
+`Promise.any()`
+:   Se cumple si cualquiera de las Promesas suministradas es cumplida, y se rechaza solo si todas las Promesas son rechazadas.
+
+`Promise.allSettled()`
+:   Se cumple cuando las Promesas se han liquidado, independientemente de su resultado.
+
+`Promise.race()`
+:   Se rechaza o cumple basándose en el resultado de la primera Promesa en liquidarse, ignorando todas las Promesas liquidadas posteriormente.
+
+#### `async`/`await`
+
+Cuando usas la palabra clave `async` antes de una declaración de función o expresión de función, cualquier valor que esa función retorne se devuelve como una Promesa cumplida que contiene ese valor. Esto te permite ejecutar y gestionar operaciones asíncronas utilizando los mismos flujos de trabajo que el desarrollo síncrono.
+
+    async function miFuncion() {
+      return "Este es mi valor retornado.";
+    }
+
+    miFuncion().then( miValorRetornado => console.log( miValorRetornado ) );
+    > "Este es mi valor retornado."
+
+La expresión `await` pausa la ejecución de una función asíncrona mientras se liquida la Promesa asociada. Después de que la Promesa se liquida, el valor de la expresión `await` es el valor cumplido o rechazado de la Promesa.
+
+    async function miFuncion() {
+      const miPromesa  = new Promise( ( cumplir, rechazar ) => { setTimeout( () => cumplir( "Exitosa. "), 5000 ); });
+      const miResultadoPromesa = await miPromesa;
+      return miResultadoPromesa;
+    }
+
+    miFuncion()
+      .then( miResultado => console.log( miResultado ) )
+      .catch( miResultadoFallido => console.error( miResultadoFallido ) );
+    > "Exitosa."
+
+Cualquier valor que no sea una Promesa incluido en una expresión `await` se devuelve como una Promesa cumplida:
+
+    async function miFuncion() {
+      const miResultadoPromesa = await "Valor de cadena.";
+      return miResultadoPromesa;
+    }
+
+    miFuncion()
+      .then( miResultado => console.log( miResultado ) )
+      .catch( miResultadoFallido => console.error( miResultadoFallido ) );
+    > "Valor de cadena."
 </script>
 </body>
 </html>

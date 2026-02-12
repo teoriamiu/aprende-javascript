@@ -1,8 +1,123 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🤗 ¡Descriptores de acceso de la propiedad!</h2>
 <script>
-  
+Descriptores de acceso de la propiedad
+
+Existen dos maneras de establecer, modificar y acceder a las propiedades de un objeto: la notación de puntos y la notación con corchetes.
+
+Notación de puntos
+Como se vio en algunos ejemplos anteriores, la notación de puntos usa un punto (.) entre un objeto y la clave de propiedad a la que se accede:
+
+
+const myObj = {
+    "myProp": "String value."
+};
+
+myObj.myProp;
+> "String value."
+Puedes usar la notación de puntos para acceder, cambiar o crear propiedades nuevas con operadores de asignación:
+
+
+const myObj = {};
+
+myObj.myProp = "String value.";
+
+myObj;
+> Object { myProp: "String value." }
+Encadenar claves de propiedades con la notación de puntos te permite acceder a las propiedades de objetos que, a su vez, son propiedades de un objeto:
+
+
+const myObj = {
+    "myProp": {
+            "childProp" : true
+    }
+};
+
+myObj.myProp.childProp;
+> true;
+Sin embargo, usar esta sintaxis cuando es posible que una clave especificada en la cadena no esté definida puede causar errores. En el siguiente ejemplo, myMissingProp no es una propiedad del objeto myObj, por lo que intentar acceder a myObj.myMissingProp da como resultado undefined. Si intentas acceder a una propiedad en undefined, como si fuera un objeto, se produce un error:
+
+const myObj = {
+    "myProp": {
+            "childProp" : true
+    }
+};
+
+> myObj.myMissingProp
+> undefined
+
+myObj.myMissingProp.childProp;
+> Uncaught TypeError: myObj.myMissingProp is undefined
+Para abordar este problema, ES2020 introdujo un "operador de encadenamiento opcional" (?.) para acceder de forma segura a las propiedades anidadas de los objetos.
+
+const myObj = {
+    "myProp": {
+            "childProp" : true
+    }
+};
+
+myObj.myMissingProp?.childProp;
+> undefined
+Las claves a las que se accede con la notación de punto no están encerradas entre comillas, como las cadenas literales. Esto significa que puedes usar la notación de puntos para acceder solo a las claves de propiedad que sean identificadores válidos:
+
+const myObj = {
+    "1": true,
+    "key with spaces": true
+};
+
+myObj.1;
+> Uncaught SyntaxError: unexpected token: numeric literal
+
+myObj.key with spaces;
+> Uncaught SyntaxError: unexpected token: keyword 'with'
+Por este motivo, recomendamos seguir las reglas de identificadores. cuando se especifican claves de propiedad siempre que sea posible. Si esto no es posible para una clave determinada, una sintaxis alternativa de notación de corchetes te permite establecer y acceder a claves de objetos basadas en cadenas que no siguen las reglas de identificadores.
+
+Notación con corchetes
+La notación de corchetes usa un conjunto de corchetes ([]) que contiene un valor que evalúa una cadena (o un símbolo) que representa la clave de la propiedad.
+
+const myObj = {
+    "myProp": "String value."
+};
+
+myObj["myProp"];
+> "String value."
+Esta sintaxis es considerablemente más permisiva y potencialmente permisiva sea confuso, porque el valor entre corchetes se evalúa como un literal de cadena sin importar el tipo de datos. Por ejemplo, aquí se usan el valor booleano false y el valor numérico 10 para acceder a las propiedades asociadas con las claves literales de cadena "false" y "10":
+
+const myObj = {
+    "false": 25,
+    "10" : true,
+    "key with spaces": true
+};
+
+myObj[false];
+> 25
+
+myObj[10];
+> true
+
+myObj["key with spaces"];
+> true
+La fortaleza de esta sintaxis reside en su flexibilidad, lo que permite el uso de cadenas creadas de forma dinámica para acceder a propiedades. En el siguiente ejemplo, se usa un para seleccionar una de las tres propiedades de un objeto:
+
+const colors = {
+    "color1" : "red",
+    "color2" : "blue",
+    "color3" : "green"
+};
+const randomNumber = Math.ceil( Math.random() * 3 );
+
+colors[ "color" + randomNumber ];
+> "blue"
+Al igual que con la notación de punto, puedes usar la notación con corchetes para acceder a propiedades nuevas y crearlas, con operadores de asignación:
+
+const myObj = {};
+
+myObj[ "myProp" ] = "String value.";
+
+myObj;
+> Object { myProp: "String value." }
 </script>
 </body>
 </html>

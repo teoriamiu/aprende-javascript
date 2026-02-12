@@ -1,8 +1,180 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😑 ¡Clases!</h2>
 <script>
-  
+Clases
+
+ES6 introdujo el concepto de "clases" en JavaScript, que difiere de en otros lenguajes de programación. Aquí, las clases son funciones especiales que sirven como plantillas para crear objetos que ya contienen datos, propiedades asociados con esos datos y los métodos relacionados con la manipulación de esos datos. Estos objetos, propiedades y métodos se denominan, en conjunto, “miembros”. de los .
+
+Para definir una clase, usa la palabra clave class. Si sigues la práctica recomendada y establecida por las funciones de constructor incorporadas de JavaScript, comienza cualquier identificador de una clase con mayúscula:
+
+
+class MyClass {}
+Las clases están pensadas para ofrecer formas más accesibles de trabajar con cursos características de los prototipos y las funciones de constructor:
+
+class MyClass {}
+
+typeof MyClass;
+> "function"
+Porque se agregaron en parte clases para facilitar el trabajo con JavaScript avanzado funciones más fáciles y atractivas, a veces se denominan “sintaxis”. Sin embargo, hacen más que solo brindar una abreviatura útil para trabajar con herencia prototípica. Presentamos oportunidades creadas por la sintaxis de la clase para abordar el diseño de larga data en JavaScript sin introducir problemas de retrocompatibilidad. Como uno ejemplo, todo el código dentro del cuerpo de una clase siempre se evalúa en modo estricto.
+
+Para crear una instancia de una clase, usa el operador new.
+
+class MyClass {}
+
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> Object { }
+Las funciones definidas dentro del cuerpo de una clase se exponen como métodos de cada una. instancia de esa clase.
+
+class MyClass {
+    classMethod() {
+        console.log( "My class method." );
+    }
+}
+
+const myClassInstance = new MyClass();
+
+myClassInstance.classMethod();
+> "My class method."
+Un método definido dentro de una clase se convierte en un método del prototipo del instancia resultante. Debido a la naturaleza del cadena de prototipo, puedes llamar estos métodos directamente en el objeto resultante:
+
+class MyClass {
+  classMethod() {
+    console.log( "My class method." );
+  }
+}
+
+const myClassInstance = new MyClass( "A string." );
+
+myClassInstance;
+> Object { }
+    <prototype>: Object { … }
+        classMethod: function classMethod()
+        constructor: class MyClass { constructor(myPassedValue) }
+        <prototype>: Object { … }
+
+myClassInstance.classMethod();
+> "My class method."
+Cuando creas una instancia de una clase, se llama a un método constructor() especial que realiza cualquier "configuración" necesaria para la instancia recién creada y se inicializa las propiedades asociadas a ella. Cualquier argumento que se pase a la clase cuando de cada instancia de Compute Engine están disponibles para el método constructor():
+
+class MyClass {
+  constructor( myPassedValue ) {
+    console.log( myPassedValue );
+  }
+}
+
+const myClassInstance = new MyClass( "A string." );
+> "A string."
+Dentro del cuerpo de una clase, el valor de this hace referencia a la instancia en sí. con las propiedades definidas en this expuestas como propiedades de cada instancia de esa clase:
+
+class MyClass {
+  constructor( myPassedValue ) {
+    this.instanceProperty = myPassedValue;
+  }
+}
+
+const myClassInstance = new MyClass( "A string." );
+
+myClassInstance;
+> Object { instanceProperty: "A string." }
+Estas propiedades también están disponibles para todos los métodos dentro del cuerpo de la clase:
+
+class MyClass {
+  constructor( myPassedValue ) {
+    this.instanceProp = myPassedValue;
+  }
+  myMethod() {
+    console.log( this.instanceProp );
+  }
+}
+
+const myClassInstance = new MyClass( "A string." );
+
+myClassInstance.myMethod();
+> "A string."
+Si no defines un constructor() para tu clase, el motor de JavaScript asume un campo “predeterminado” vacío constructor Cada clase solo puede tener un método con el nombre constructor():
+
+class MyClass {
+  constructor() {}
+  constructor() {}
+}
+> Uncaught SyntaxError: A class may only have one constructor
+Puedes definir una clase mediante una declaración de clase o una class expression. Los ejemplos anteriores han sido declaraciones de clases, que requieren que los nombres se invoquen con new. Las expresiones de clase pueden tener un nombre o se dejan sin nombre para crear una conversación “anónima” .
+
+let ClassExpression = class {
+    constructor() {}
+};
+
+ClassExpression;
+> class  {}
+Puedes usar expresiones de clase anónimas para las funciones que construir clases "sobre la marcha":
+
+function classMaker() {
+  return class {
+    constructor() {}
+  };
+}
+
+let MyVariable = classMaker();
+
+MyVariable;
+> class  {}
+Si vuelves a declarar una clase mediante una declaración de clase, se produce un error de sintaxis:
+
+
+class MyClass {
+    constructor( ) {
+        console.log( "My class." );
+    }
+};
+
+class MyClass {
+    constructor() {
+        console.log( "My new class." );
+    }
+};
+> Uncaught SyntaxError: redeclaration of class MyClass
+Sin embargo, las expresiones de clase te permiten redefinir una clase:
+
+let ClassExpression = class MyClass { };
+
+ClassExpression = class MyOtherClass {
+    constructor( myString ) {
+        this.myProp = myString;
+    }
+};
+
+new ClassExpression( "String." );
+> MyOtherClass {myProp: 'String.'}
+No puedes invocar una expresión de clase con nombre por el mismo nombre que una clase declaración. Sin embargo, el nombre asignado de una expresión de clase está disponible como una de la instancia creada, principalmente para facilitar la depuración:
+
+let MyVariable = class MyClass {};
+
+MyClass;
+> Uncaught ReferenceError: MyClass is not defined
+
+MyVariable;
+> class MyClass {}
+
+MyVariable.name;
+> "MyClass"
+Cuando inicializas una variable usando una expresión de clase, la reglas de elevación de esa variable se siguen como se espera. Las declaraciones de clases siguen la misma "zona sin conexión temporal" como let y const, y se comportan como si no se hubieran elevado a la cima de su alcance actual, lo que significa que invocar una clase antes de la declaración de la clase genera un error:
+
+{
+    let myVar = new MyClass( "Property string." );
+
+    class MyClass {
+        myProp;
+
+        constructor( myString ) {
+            this.myProp = myString;
+        }
+    };
+};
+> Uncaught ReferenceError: Cannot access 'MyClass' before initialization
 </script>
 </body>
 </html>

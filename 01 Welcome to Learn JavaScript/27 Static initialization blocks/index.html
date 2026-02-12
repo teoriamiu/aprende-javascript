@@ -1,8 +1,67 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😏 ¡Bloques de inicialización estáticos!</h2>
 <script>
-  
+Bloques de inicialización estáticos
+
+Los bloques de inicialización estática son una función de JavaScript muy nueva, estandarizada en ECMAScript 2022 y solo es compatible con navegadores modernos. Los bloques de inicialización estática permiten establecer el valor de los campos estáticos de forma dinámica. con una lógica que abarca múltiples sentencias.
+
+Para crear un bloque de inicialización estático, usa la palabra clave static seguida de un instrucción de bloqueo en formato rizado corchetes ({}):
+
+class MyClass {
+  static {}
+}
+Este patrón te permite inicializar o modificar campos estáticos declarados en el cuerpo de la clase:
+
+class MyClass {
+  static firstProperty = 'First property.';
+  static secondProperty;
+  static {
+    this.secondProperty = 'Second property.';
+  }
+}
+
+MyClass.secondProperty;
+"Second property."
+Estas instrucciones se evalúan en el momento en que una clase se inicializa por primera vez, de es cuando el motor de JavaScript la evalúa por primera vez, no cuando una instancia de un al igual que con constructor():
+
+class MyClass {
+    static {
+        console.log( "Static initialization block." );
+    }
+    constructor() {
+        console.log( "Constructor." );
+    }
+}
+> "Static initialization block."
+
+const myClassInstance = new MyClass();
+> "Constructor."
+Una clase puede contener varios bloques de inicialización estática, que se evalúen en el orden en que estén declarados, junto con cualquier otro campo estático y . Esto significa que solo los campos declarados antes de una inicialización estática están disponibles en ese bloque:
+
+
+class MyClass {
+  static myNewField;
+  static {
+    this.myNewField = this.myField;
+  }
+  static myField = "My value.";
+};
+
+MyClass.myNewField;
+> undefined
+
+class MyCorrectedClass {
+  static myNewField;
+  static myField = "My value.";
+  static {
+    this.myNewField = this.myField;
+  }
+};
+
+MyCorrectedClass.myNewField;
+> "My value."
 </script>
 </body>
 </html>

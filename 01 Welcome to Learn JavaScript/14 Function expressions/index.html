@@ -1,8 +1,174 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😗 ¡Expresiones de función!</h2>
 <script>
-  
+//# Expresiones de función
+
+//Las expresiones de función son funciones creadas donde se espera una expresión. Con frecuencia encontrarás expresiones de función como valores asignados a una variable. Aunque una declaración de función siempre requiere un nombre, puedes usar expresiones de función para crear funciones anónimas omitiendo el identificador y siguiendo la palabra clave `function` con un par de paréntesis que contienen parámetros opcionales:*/
+
+{
+    const miVariable = function() { };
+}
+
+// Luego puedes llamar a esas expresiones de función usando el identificador de la variable:
+
+{
+    const miVariable = function() {
+        console.log( "Esta es mi función." );
+    };
+
+    console.log(miVariable());
+    //> "Esta es mi función."
+}
+
+// También puedes usar expresiones de función para crear funciones con nombre usando una sintaxis similar a las declaraciones de función:
+
+{
+    const miVariable = function miFuncion() {
+        console.log( "Esta es mi función." );
+    };
+
+    console.log(miVariable());
+    // > "Esta es mi función."
+}
+
+//Sin embargo, a diferencia de las declaraciones de función, una expresión de función con nombre solo puede ser accedida por su nombre dentro de la propia función:
+
+{
+    const miVariable = function miFuncion() {
+        console.log( `Soy un/una ${ typeof miFuncion }.`);
+    };
+
+    console.log(typeof miFuncion);
+    //> "undefined"
+
+    console.log(typeof miVariable);
+    //> "function"
+
+    console.log(miVariable());
+    //> "Soy un/una function."
+}
+
+//Los nombres asociados con expresiones de función son útiles principalmente para depuración. Una expresión de función con nombre también puede llamarse a sí misma recursivamente, aunque este no es un caso de uso muy común en el desarrollo moderno:
+
+{
+    const miVariable = function miFuncion() {
+        console.log( "Ha transcurrido un segundo." );
+        setTimeout( miFuncion, 1000);
+    };
+
+    setTimeout( miVariable, 1000 );
+//> "Ha transcurrido un segundo."
+//> "Ha transcurrido un segundo."
+//> "Ha transcurrido un segundo."
+}
+
+//### Expresiones de función flecha
+
+//Las expresiones de función flecha (a menudo llamadas "funciones flecha" o, raramente, "funciones lambda") se introdujeron en ES6 para proporcionar una sintaxis concisa para crear expresiones de función anónimas con algunos comportamientos únicos.
+
+//Puedes crear una función flecha donde sea que se espere una expresión, por ejemplo, como un valor asignado a una variable. En su forma más común, una función flecha se compone de un par de paréntesis que contienen cero o más parámetros, una flecha formada por un solo signo igual y un carácter mayor que (`=>`), y un par de llaves que contienen el cuerpo de la función:
+
+{
+    const miFuncion = () => {};
+}
+
+//Bajo ciertas condiciones, puedes hacer la sintaxis aún más compacta. Si solo usas un parámetro, puedes omitir los paréntesis iniciales:
+
+{
+    const miFuncion = miParametro => {};
+}
+
+//Cuando quieres que el cuerpo de la función retorne el valor de una sola expresión, no se requiere ni encerrar el cuerpo de la función entre llaves ni la palabra clave `return`:
+
+{
+    const miFuncion = () => 2 + 2
+
+    console.log(miFuncion());
+    //> 4
+}
+
+//Las funciones flecha son únicas porque no tienen su propio contexto para los valores de `arguments`. En su lugar, heredan ambos valores del *entorno léxicamente contenedor* de la función flecha, es decir, la función contenedora más cercana que sí proporciona esos contextos.
+
+{
+    function miFuncionPadre() {
+        this.miPropiedad = true;
+        let miFuncion = () => {
+                console.log( this );
+        }
+        miFuncion();
+    };
+
+    let miInstancia = new miFuncionPadre();
+//> Object { miPropiedad: true }
+}
+
+//### Llamar a funciones flecha
+
+//Las funciones flecha no vinculan los argumentos de la misma manera que otros tipos de funciones. Un objeto `arguments` en el cuerpo de una función flecha hereda su valor del entorno léxicamente contenedor más cercano de esa función flecha:
+
+{
+    function miFuncion() {
+        let miFuncionFlecha = () => {
+                console.log( arguments[ 0 ] );
+        }
+        miFuncionFlecha( true );
+    };
+
+    miFuncion( false );
+    //> false
+}
+
+//En este ejemplo, una función externa llamada con el argumento `false` llama a una función flecha interna con el argumento `true`. Debido a que el objeto `arguments` dentro de la función flecha se resuelve a la vinculación en la función externa, la función interna registra el `false` de la función externa.
+
+//Si no hay ningún objeto `arguments` que heredar del contexto padre, el objeto `arguments` de la función flecha no está definido, e intentar acceder a él causa un error:
+
+{
+    let miFuncionFlecha = () => {
+        console.log(arguments);
+    };
+    //miFuncionFlecha( true );
+    //> Uncaught ReferenceError: arguments is not defined
+}
+
+//### Expresiones de función invocadas inmediatamente (IIFE)
+
+//Una Expresión de Función Invocada Inmediatamente (IIFE, por sus siglas en inglés), también llamada a veces "función anónima autoejecutable", es una expresión de función que se llama inmediatamente cuando es definida. Una IIFE utiliza una expresión de función creada al encerrar la función en un operador de agrupación. Un segundo par de paréntesis llama a la función, ya sea inmediatamente después de la definición de la función o inmediatamente después del operador de agrupación. Si usas una función estándar, no hay diferencia práctica entre los dos enfoques:
+
+{
+    (function() {
+        console.log( "IIFE.")
+        }
+    )();
+    //> "IIFE."
+}
+{
+    (function() {
+        console.log( "IIFE.")
+        }
+    ());
+    //> "IIFE."
+}
+
+//El primer ejemplo llama a la expresión de función agrupada. El segundo ejemplo llama a una declaración de función dentro de los operadores de agrupación, y el resultado final se evalúa entonces como una expresión agrupada. El resultado es el mismo en ambos casos.
+
+//Sin embargo, hay una diferencia cuando tu IIFE es una función flecha. En este caso, los paréntesis utilizados para llamar a la función deben estar fuera de los operadores de agrupación, porque una función flecha por sí sola no es una expresión, pero debe ser creada en un contexto donde se espera una expresión. Intentar llamar a la función flecha desde dentro del ámbito de los operadores de agrupación significaría llamar a una función flecha que aún no ha sido creada en el contexto de una expresión:
+
+/*( () => {
+        console.log( "IIFE." );
+    }() );*/
+    //> Uncaught SyntaxError: missing ) in parenthetical
+
+//Debido a que los operadores de agrupación esperan una expresión, la función flecha dentro de ellos está definida, lo que permite que los paréntesis que los siguen llamen a la expresión agrupada:
+
+{
+    ( () => {
+        console.log( "IIFE." );
+    } )();
+    //> "IIFE."
+}
+//Aplicaciones heredadas, IIFE utilizado con frecuencia para administrar el alcance, específicamente para evitar contaminar el alcance global con variables con alcance de función y declaraciones de funciones. Antes de la introducción del alcance de bloque en ES6, era común unir una secuencia de comandos completa en un IIFE para evitar la contaminación accidental del alcance global.
 </script>
 </body>
 </html>

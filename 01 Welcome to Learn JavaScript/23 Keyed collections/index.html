@@ -1,8 +1,172 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😐 ¡Colecciones con clave!</h2>
 <script>
-  
+Colecciones con clave
+
+Puedes usar literales de objeto para almacenar pares clave-valor y arrays para almacenar colecciones iterables de valores. ES6 también presenta estructuras de datos especializadas para casos de uso más detallados: asignar para pares clave-valor y establecer para valores individuales.
+
+Mapa
+Un Map es una estructura de datos iterable que almacena información como pares clave-valor, similar a un literal de objeto. A diferencia de los literales de objeto, un Map permite ambos valores y claves para tener cualquier tipo de datos, y el orden en que los elementos se agregan a un mapa es conserva cuando se itera sobre él.
+
+Para crear un mapa, usa el constructor Map():
+
+
+const myMap = new Map();
+
+myMap;
+> Map(0)
+Puedes prepropagar un mapa con datos usando una sintaxis similar a un array (o cualquier objeto iterador) que contenga objetos similares a un array compuestos por dos elementos. El primer elemento de cada uno las estructuras de datos de dos elementos se convierten en la clave, mientras que la segunda se convierte en el valor asociada con esa clave. La forma más simple de esto es, en efecto, una matriz en cada elemento es un array compuesto por dos elementos: la clave y el valor del elemento que se agregará al mapa:
+
+
+const myMap = new Map([
+    [ "myKey", "A string value" ],
+    [ "mySecondKey", 500 ],
+    [ "myThirdKey", true ]
+]);
+
+myMap;
+> Map(3) {'myKey' => 'A string value', 'mySecondKey' => 500, 'myThirdKey' => true}
+Una vez más, un objeto Map se diferencia de un literal de objeto en que ambos valores y las claves pueden tomar cualquier tipo de datos y valor:
+
+
+const notAFunction = () => console.log( "function" );
+const myMap = new Map([
+  [ null, 0 ],
+  [ false, "This is false" ],
+  [ undefined, "No defined value" ],
+  [ NaN, "Not a number" ]
+]);
+
+myMap;
+> Map(4) {null => 0, false => 'This is false', undefined => 'No defined value', NaN => 'Not a number'}
+Para obtener, configurar o borrar elementos del mapa, usa los métodos heredados de Map. constructor:
+
+
+const myMap = new Map();
+
+myMap;
+> Map(0)
+
+myMap.set( "myKey", "My value." );
+
+myMap.has( "myKey" );
+> true
+
+myMap.get( "myKey" );
+"My value."
+
+myMap.delete( "myKey" );
+
+myMap;
+> Map(0)
+Las claves de un mapa son únicas. Esto significa que, si estableces una clave idéntica, se reemplaza el par clave-valor previamente almacenado:
+
+
+const myMap = new Map([ [ "myKey", "A string value" ] ]);
+
+myMap.set( "myKey", 500 );
+
+myMap;
+> Map(1) {'myKey' => 500}
+Al igual que con los objetos, puedes asignar un Map a una variable declarada con const y y, luego, modificarlo. Sin embargo, al igual que con otros casos de uso de const, no puedes modificar o eliminar la variable propiamente dicha:
+
+
+const myMap = new Map();
+myMap.set( "myKey", "A string value" );
+
+myMap;
+> Map(1) {'myKey' => 500}
+WeakMap
+Un WeakMap es un mapa que se mantiene "débil" referencias, que deben hacer referencia a objetos o símbolos que no se hayan agregado al Registro de símbolos global.
+
+Para crear un WeakMap, usa el constructor WeakMap():
+
+
+const myWeakMap = new WeakMap();
+
+myWeakMap;
+> WeakMap(0)
+La sintaxis de WeakMap es similar a la de Map, pero WeakMaps no lo es. iterable y tratar de usar cualquier valor que no sea un objeto o símbolo como clave generará un error de sintaxis. Cuando no existen referencias a una clave fuera de WeakMap, ese objeto o símbolo y el valor asociado en el WeakMap, son aptos para la recolección de elementos no utilizados.
+
+Esto permite casos de uso como almacenar metadatos asociados a un objeto en un WeakMap, con la referencia al objeto como clave. Si no hay otras referencias existen para este objeto y este se quita de la memoria, se los metadatos.
+
+Establecer
+Un Conjunto es una colección iterable de valores únicos de alguna forma similar a un array, aunque un Set solo puede contener valores únicos. Al igual que con un mapa, iterar sobre un Set conserva el orden en que se le agregaron los elementos.
+
+Para crear un conjunto, usa el constructor Set():
+
+
+const mySet = new Set();
+
+mySet;
+> Set []
+También puedes crear un conjunto a partir de un literal de array:
+
+
+const mySet = new Set([ 1, 2, 3 ]);
+
+mySet;
+> Set(3) [ 1, 2, 3 ]
+Dado que un conjunto no permite elementos duplicados, cuando se crea un conjunto a partir de un array que contiene varias instancias del mismo valor, solo retiene la primera instancia de ese valor:
+
+
+const mySet = new Set([ 1, 2, 3, 2 ]);
+
+mySet;
+> Set(3) [ 1, 2, 3 ]
+Para agregar elementos a un conjunto o quitarlos, usa los métodos heredados de Set. . Estos métodos actúan sobre un elemento según el valor del elemento en lugar de hacer referencia a un índice:
+
+
+const mySet = new Set();
+
+mySet.add( "My value." );
+
+mySet;
+> Set [ "My value." ]
+
+mySet.has( "My value." );
+> true
+
+mySet.delete( "My value." );
+
+mySet;
+> Set []
+Aunque los conjuntos no son colecciones indexadas y no están diseñados para usarse como Por lo tanto, los elementos de un conjunto se iteran en el orden de inserción. Se incluyen los intentos de agregar un valor de elemento duplicado a un conjunto se omitió y se mantendrá el orden de inserción original:
+
+
+const mySet = new Set([ 1, 2, 3 ]);
+
+mySet;
+> Set(3) [ 1, 2, 3 ]
+
+mySet.add( 2 );
+> Set(3) [ 1, 2, 3 ]
+Para crear un array a partir de un conjunto, usa el método Array.from() o expande sintaxis:
+
+
+const mySet = new Set([ 1, 2, 3 ]);
+const myArray = Array.from( mySet );
+
+myArray;
+> Array(3) [ 1, 2, 3 ]
+
+[ ...mySet ];
+> Array(3) [ 1, 2, 3 ]
+WeakSet
+WeakSet es un conjunto que solo contiene valores que no se pueden recolectar. como referencias a objetos o símbolos que no se hayan agregado al Registro de símbolos global.
+
+Para crear un WeakSet, usa el constructor WeakSet():
+
+
+const myWeakSet = new WeakSet();
+
+myWeakSet;
+> WeakSet []
+La sintaxis WeakSet es similar a Set, aunque un WeakSet no es iterable y tratar de agregar cualquier valor que no sea un objeto o símbolo genera un error de sintaxis. Al igual que con WeakMap, cuando no hay otras referencias a existe un valor al que hace referencia un WeakSet, ese valor se vuelve apto para recolección de elementos no utilizados.
+
+Esto permite casos de uso como agregar una colección única e iterable de objetos relacionados. Si no existen otras referencias a un Objeto al que hace referencia el WeakSet, el elemento asociado también se quita del WeakSet.
 </script>
 </body>
 </html>

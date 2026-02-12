@@ -1,8 +1,382 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🤨 ¡Colecciones indexadas!</h2>
 <script>
-  
+Colecciones indexadas
+
+Una colección indexada es una estructura de datos en la que se almacenan y a las que se accede mediante índices numerados. Los valores almacenados en una colección indexada se a los índices numerados asignados a partir de 0, un patrón llamado “indexación cero”. Luego, puedes acceder a los valores almacenados en una colección indexada haciendo referencia a sus índices.
+
+Arreglo
+Un array es un contenedor que puede contener cero o más valores de cualquier tipo de datos. incluidos objetos complejos y otras matrices. Los valores almacenados en un array son a veces denominados «elementos» del array.
+
+Crea un array
+Al igual que con los tipos de datos primitivos, existen dos enfoques para crear un array: como un literal de array o si invocas el constructor Array() integrado de JavaScript con new Array(). Asignar un array a una variable proporciona un entorno e iterable de asignar múltiples valores a un solo identificador.
+
+La sintaxis del literal de array usa un conjunto de corchetes ([]) que rodean cero o más. valores de datos separados por comas:
+
+
+const myArray = [];
+La sintaxis del constructor de arrays usa el objeto integrado Array de JavaScript como un constructor con la palabra clave new:
+
+
+const myArray = new Array();
+Tanto el literal de array como la sintaxis del constructor de array te permiten propagar un array con información cuando se crea, aunque las sintaxis difieren un poco en la forma en que de salida definidos. La sintaxis literal de array usa valores separados por comas entre las corchetes, que son idénticos al array resultante:
+
+
+const myArray = [ true, null, "String", false ];
+
+myArray;
+> [ true, null, "String", false ]
+La sintaxis del constructor de arrays toma valores separados por comas como argumentos, con uno excepción de comportamiento especial:
+
+
+const myArray = new Array( true, null, "String", false );
+
+myArray;
+> Array(4) [ true, null, "String", false ]
+Cuando se pasa un solo valor numérico al constructor Array, ese valor no se asigna a la posición cero en el array resultante. En cambio, un array con esa cantidad de ranuras vacías para los valores. Esto no impone ningún del array. Los elementos se pueden agregar y quitar de la misma manera. como con un literal de array.
+
+
+// Firefox:\
+const myArray = new Array( 10 );
+
+myArray;
+> Array(10) [ <10 empty slots> ]
+
+// Chrome:
+const myArray = new Array( 10 );
+
+myArray;
+> (10) [empty × 10]
+Los arrays con ranuras vacías (a veces llamados “arrays dispersos”) son especiales diferentes. En lugar de contener un valor undefined o null explícitamente, vacío Las ranuras se suelen tratar como valores undefined en otra parte de la idioma.
+
+Puedes crear accidentalmente un array disperso con la sintaxis literal de array. omitir un valor entre comas cuando creas un literal de array:
+
+
+const myArray = [ true,, true, false ];
+
+myArray;
+> Array(4) [ true, <1 empty slot>, true, false ]
+A pesar de que no se trata como un valor significativo en todos los contextos, una ranura vacía se tiene en cuenta en la longitud total del array, lo que podría generar resultados inesperados al iterar los valores de un array:
+
+
+const myArray = [ 1,, 3, 4 ];
+
+myArray.length;
+> 4
+
+for( const myValue of myArray ) {
+  console.log( myValue + 10 );
+}
+> 11
+> NaN
+> 13
+> 14
+Este comportamiento es un reemplazo de algunas de las primeras decisiones de diseño de JavaScript. Evita usar arrays dispersos en el desarrollo moderno.
+
+Al igual que con las primitivas, un array literal hereda propiedades y métodos de su constructor correspondiente. Debido a que un array es una forma especial de un objeto, la sintaxis del literal de array y new Array() crea resultados funcionalmente idénticos: un objeto que hereda su prototipo del constructor Array.
+
+
+const arrayLiteral = [];
+const arrayConstructor = new Array();
+
+typeof arrayLiteral;
+> "object"
+
+arrayLiteral;
+> Array []
+    length: 0
+    <prototype>: Array []
+
+typeof arrayConstructor;
+> "object"
+
+arrayConstructor;
+> Array []
+    length: 0
+    <prototype>: Array []
+Debido a que los dos resultados son idénticos, y la sintaxis del literal de array es más concisa literales, recomendamos usar siempre sintaxis literal de array en lugar de new Array().
+
+Accede a los valores de array
+Puedes acceder a los elementos individuales dentro del array con la notación de corchetes, conjunto de corchetes ([]) que siguen al array o su identificador que contiene un número que hace referencia al índice de ese elemento:
+
+
+
+[ "My string", "My other string" ][ 1 ];
+> "My other string"
+
+const myArray = [ "My string", 50, true ];
+
+myArray[ 0 ];
+> "My string"
+
+myArray[ 1 ];
+> 50
+
+myArray[ 2 ];
+> true
+Los arrays en JavaScript no son asociativos, lo que significa que no puedes usar una cadena arbitraria como índice. Sin embargo, los valores numéricos los valores usados para acceder a los elementos de un array se convierten en un valor de cadena detrás escenas, por lo que puedes usar un valor de cadena que solo contenga números caracteres:
+
+
+const myArray = [ "My string", 50, true ];
+
+myArray[ 2 ];
+> true
+
+myArray[ "2" ];
+> true
+Intentar acceder a un elemento fuera de los definidos en el array genera undefined, no es un error:
+
+const myArray = [ "My string", 50, true ];
+
+myArray[ 9 ];
+> undefined
+Desestructuración de la asignación
+La asignación de desestructuración es una forma concisa de extraer un rango de valores de objetos o arrays y asignarlos a un conjunto de identificadores, un proceso que a veces se denomina “desempaquetado” la estructura de datos original, aunque no modifique el objeto o array original.
+
+La asignación de desestructuración usa una lista de identificadores similar a un array o a un objeto para a realizar un seguimiento de los valores. En su forma más sencilla, se denomina patrón de vinculación. desestructuración, cada valor se descomprime del array o del objeto y se asigna a un variable correspondiente, inicializada con let o const (o var):
+
+const myArray = [ "A string", "A second string" ];
+const [ myFirstElement, mySecondElement ] = myArray;
+
+const myObject = { firstValue: false, secondValue: true };
+const { myProp, mySecondProp } = myObject;
+
+myFirstElement;
+> "My string"
+
+mySecondElement;
+> "Second string"
+
+myProp;
+> false
+
+mySecondProp;
+> true
+Usa llaves ({}) para desestructurar un objeto y corchetes ([]) para desestructurar un array.
+
+const myArray = [ false, true ];
+const myObject = { firstValue: false, secondValue: true };
+
+const [ myProp, mySecondProp ] = myObject;
+> Uncaught TypeError: myObject is not iterable
+
+const { myElement, mySecondElement } = myArray;
+
+myElement
+> undefined
+
+mySecondElement;
+> undefined
+La desestructuración de un array ocurre en orden secuencial, de izquierda a derecha. Cada de la asignación de desestructuración corresponde al elemento de la array con el mismo índice:
+
+
+const myArray = [ 1, 2, 3 ];
+const [ myElement, mySecondElement, myThirdElement ] = myArray;
+
+myElement;
+> 1
+
+mySecondElement;
+> 2
+
+myThirdElement;
+> 3
+Este también es el comportamiento predeterminado cuando se desestructura un objeto. Sin embargo, si el los identificadores usados en la asignación de desestructuración coinciden con las claves de la propiedades, esos identificadores se completan con la propiedad correspondiente independientemente del orden en el que se especifiquen:
+
+
+const myObject = { firstValue: 1, secondValue: 2, thirdValue 3 };
+const { secondValue, thirdValue, firstValue } = myObject;
+
+firstValue;
+> 1
+
+secondValue;
+> 2
+
+thirdValue;
+> 3
+Para omitir elementos, puedes omitir un identificador:
+
+
+const myArray = [ 1, 2, 3 ];
+const [ firstValue,, secondValue ] = myArray;
+
+firstValue;
+> 1
+
+secondValue;
+> 3
+La sintaxis de desestructuración también te permite asignar valores predeterminados en caso de que es una ranura vacía, como en el caso de un array disperso, Valor undefined.
+
+
+const myArray = [ true, ];
+const [ firstValue = "Default string.", secondValue = "Default string." ] = myArray;
+
+firstValue;
+> true
+
+secondValue;
+> "Default string."
+La deconstrucción no fuerza valores a tipos particulares. Esto significa que Valores "falsy", como empty cadenas ("") o null aún se consideran valores deconstruidos significativos:
+
+
+const myArray = [ false, null, 0, "",, undefined ];
+const [ falseValue = true, nullValue = true, zeroValue = true, emptyStringValue = true, emptySlot = true, undefinedValue = true ] = myArray;
+
+falseValue;
+> false;
+
+nullValue;
+> null
+
+zeroValue;
+> 0
+
+emptyStringValue;
+> ""
+
+emptySlot;
+> true
+
+undefinedValue;
+> true
+Operador de propagación
+Usa el operador de dispersión (...), introducido en ES6, para expandir un dato iterable como un array, una cadena o un literal de objeto en elementos individuales. Al operador de dispersión le sigue inmediatamente la estructura de datos que se expandirá o el identificador de una variable que contiene esa estructura de datos.
+
+
+const myArray = [ 1, 2, 3 ];
+
+console.log( ...myArray );
+> 1 2 3
+La sintaxis de distribución se usa principalmente para copiar y combinar arrays:
+
+
+const myArray = [ 4, 5, 6 ];
+const mySecondArray = [1, 2, 3, ...myArray ];
+
+mySecondArray;
+> Array(6) [ 1, 2, 3, 4, 5, 6 ]
+Puedes usar la sintaxis de propagación solo en los siguientes contextos:
+
+Para arrays y cadenas, la sintaxis extendida se aplica solo cuando cero o más argumentos en una llamada a función o los elementos de un array. El primer ejemplo de la sintaxis del operador de expansión en esta sección funciona porque pasa ...myArray como un argumento al método console.log integrado.
+
+Por ejemplo, no puedes asignar los datos que se extienden a una variable fuera otro array:
+
+
+const myArray = [ 1, 2, 3 ];
+const spreadVariable = ...myArray;
+> Uncaught SyntaxError: Unexpected token '...'
+Sin embargo, puedes copiar un array si lo extiendes a un literal de array:
+
+
+const myArray = [ 1, 2, 3 ];
+const spreadArray = [ ...myArray ];
+
+spreadArray;
+> Array(3) [ 1, 2, 3 ]
+Sigue estos pasos para combinar los elementos que conforman dos o más arrays en un solo array:
+
+
+const myArray = [ 1, 2, 3 ];
+const mySecondArray = [ 4, 5, 6 ];
+const myNewArray = [ ...myArray, ...mySecondArray ];
+
+myNewArray;
+> Array(6) [ 1, 2, 3, 4, 5, 6 ]
+O bien, para pasar elementos de un array como argumentos individuales en una llamada a función:
+
+
+const myArray = [ true, false ];
+const myFunction = ( myArgument, mySecondArgument ) => {
+    console.log( myArgument, mySecondArgument );
+};
+
+myFunction( ...myArray );
+> true false
+Se amplió el operador de propagación para trabajar con literales de objeto en ES2018. Al igual que con los arrays, puedes usar el operador de dispersión para duplicar o combinar objetos:
+
+
+const myObj = { myProperty : true };
+const mySecondObj = { ...myObj };
+
+mySecondObj;
+> Object { myProperty: true }
+
+const myFirstObj = { myProperty : true };
+const mySecondObj = { additionalProperty : true };
+const myMergedObj = { ...myFirstObj, ...mySecondObj };
+
+myMergedObj;
+> Object { myProperty: true, additionalProperty: true }
+El operador de propagación crea una estrategia "superficial" copias. Esto significa que no copia el prototipo del objeto original y no enumerable propiedades.
+
+
+const myCustomPrototype = { protoProp: "My prototype." };
+const myObj = Object.create( myCustomPrototype, {
+    myEnumerableProp: {
+        value: true,
+        enumerable: true
+    },
+    myNonEnumerableProp: {
+        value: false,
+        enumerable: false
+    }
+});
+const myNewObj = { ...myObj };
+
+myObj;
+> Object { myEnumerableProp: true, … }
+    myEnumerableProp: true
+    myNonEnumerableProp: false
+    <prototype>: Object { protoProp: "My prototype." }
+
+myNewObj;
+> Object { myEnumerableProp: true }
+    myEnumerableProp: true
+    <prototype>: Object { … }
+Ten en cuenta que los arrays y los objetos no se pueden usar de forma indistinta. No puedes expandir un objeto en un array, o un array en un objeto.
+
+Operador de REST
+Aunque la sintaxis del operador en sí es la misma, el operador resto (...) realiza la función opuesta, según el contexto en el que se usa. En lugar de expandir una estructura de datos iterable en elementos individuales, como lo hace en desestructuración de la tarea o como parámetro de función, el operador resto combina elementos en una estructura de datos iterable. El nombre proviene del hecho de que es que se usa para reunir "el resto" de un conjunto de valores de datos.
+
+Cuando se usa con una asignación de desestructuración, la sintaxis se denomina "propiedad rest" sintaxis.
+
+const myArray = [ "First", "Second", "Third", "Fourth", "Fifth" ];
+
+[ myFirstElement, mySecondElement, ...remainingElements ] = myArray;
+
+myFirstElement;
+> "First"
+
+mySecondElement;
+> "Second"
+
+remainingElements;
+> Array(3) [ "Third", "Fourth", "Fifth"]
+Cuando se usa para proporcionar una cantidad indefinida de argumentos a una función, la sintaxis se denomina "parámetro REST" sintaxis:
+
+function myFunction( ...myParameters ) {
+    let result = 0;
+    myParameters.forEach( ( myParam ) => {
+        result += myParam;
+    });
+    return result;
+};
+
+myFunction( 2, 2 );
+> 4
+
+myFunction( 1, 1, 1, 10, 5 );
+> 18
+
+myFunction( 10, 11, 25 );
+> 46
+%TypedArray%
+Los arrays escritos son una función de ES6 diseñada para almacenar datos binarios estructurados, en por ejemplo, cuando trabajas con archivos subidos o WebGL.
+
+Al igual que con los símbolos, el %TypedArray% Función intrínseca (por lo general, se documenta como %TypedArray% o @@TypedArray de modo que no pueda confundirse con una propiedad global) no es una función de constructor en en el sentido convencional, y no puedes invocarlo con new ni llamarlo directamente. En cambio, %TypedArray% hace referencia a una superclase superior de constructores, cada uno de los cuales funciona con un formato específico de datos binarios. El La superclase intrínseca %TypedArray% proporciona propiedades y métodos de utilidad que Todas las subclases de constructor %TypedArray% y sus instancias heredan.
 </script>
 </body>
 </html>

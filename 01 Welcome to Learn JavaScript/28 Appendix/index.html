@@ -1,8 +1,218 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😣 ¡Apéndice!</h2>
 <script>
-  
+//Apéndice
+
+//Herencia prototípica
+
+//Con la excepción de null y undefined, cada tipo de datos primitivo tiene un prototipo, un wrapper de objetos correspondiente que proporciona métodos para trabajar con valores. Cuando se invoca un método o una búsqueda de propiedades en una primitiva, JavaScript une la primitiva en segundo plano y llama al método o realiza la búsqueda de propiedades en el objeto del wrapper.
+
+//Por ejemplo, una cadena literal no tiene métodos propios, pero puedes llamar al método .toUpperCase() en ella gracias al wrapper de objetos String correspondiente:
+
+"this is a string literal".toUpperCase();
+> THIS IS A STRING LITERAL
+Esto se denomina herencia prototípica: heredar propiedades y métodos del constructor correspondiente de un valor.
+
+Number.prototype
+> Number { 0 }
+>  constructor: function Number()
+>  toExponential: function toExponential()
+>  toFixed: function toFixed()
+>  toLocaleString: function toLocaleString()
+>  toPrecision: function toPrecision()
+>  toString: function toString()
+>  valueOf: function valueOf()
+>  <prototype>: Object { … }
+
+//Puedes crear primitivas con estos constructores, en lugar de solo definirlas por su valor. Por ejemplo, usar el constructor String crea un objeto de cadena, no una cadena literal: un objeto que no solo contiene nuestro valor de cadena, sino todas las propiedades y métodos heredados del constructor.
+
+const myString = new String( "I'm a string." );
+
+myString;
+> String { "I'm a string." }
+
+typeof myString;
+> "object"
+
+myString.valueOf();
+> "I'm a string."
+
+//En su mayoría, los objetos resultantes se comportan como los valores que usamos para definirlos. Por ejemplo, aunque definir un valor numérico con el constructor new Number genera un objeto que contiene todos los métodos y propiedades del prototipo Number, puedes usar operadores matemáticos en esos objetos de la misma manera que lo harías en números literales:
+
+const numberOne = new Number(1);
+const numberTwo = new Number(2);
+
+numberOne;
+> Number { 1 }
+
+typeof numberOne;
+> "object"
+
+numberTwo;
+> Number { 2 }
+
+typeof numberTwo;
+> "object"
+
+numberOne + numberTwo;
+> 3
+
+//En muy raras ocasiones necesitarás usar estos constructores, ya que la herencia prototípica integrada de JavaScript significa que no proporcionan ningún beneficio práctico. Crear primitivas con constructores también puede generar resultados inesperados, ya que el resultado es un objeto, no un literal simple:
+
+let stringLiteral = "String literal."
+
+typeof stringLiteral;
+> "string"
+
+let stringObject = new String( "String object." );
+
+stringObject
+> "object"
+Esto puede complicar el uso de operadores de comparación estrictos:
+
+const myStringLiteral = "My string";
+const myStringObject = new String( "My string" );
+
+myStringLiteral === "My string";
+> true
+
+myStringObject === "My string";
+> false
+
+//Inserción automática de punto y coma (ASI)
+
+//Mientras analizan una secuencia de comandos, los intérpretes de JavaScript pueden usar una función llamada inserción automática de punto y coma (ASI) para intentar corregir instancias de puntos y coma omitidos. Si el analizador de JavaScript encuentra un token que no está permitido, intenta agregar un punto y coma antes de ese token para corregir el posible error de sintaxis, siempre que se cumpla una o más de las siguientes condiciones:
+
+//Ese token está separado del anterior por un salto de línea.
+//Ese token es }.
+//El token anterior es ), y el punto y coma insertado sería el punto y coma final de una sentencia do…while.
+//Para obtener más información, consulta las reglas de ASI.
+
+//Por ejemplo, omitir los puntos y coma después de las siguientes instrucciones no generará un error de sintaxis debido a ASI:
+
+const myVariable = 2
+myVariable + 3
+> 5
+
+//Sin embargo, ASI no puede tener en cuenta varias instrucciones en la misma línea. Si escribes más de una sentencia en la misma línea, asegúrate de separarlas con punto y coma:
+
+const myVariable = 2 myVariable + 3
+> Uncaught SyntaxError: unexpected token: identifier
+
+const myVariable = 2; myVariable + 3;
+> 5
+
+//ASI es un intento de corrección de errores, no un tipo de flexibilidad sintáctica integrada en JavaScript. Asegúrate de usar punto y coma cuando corresponda para no depender de ellos para producir un código correcto.
+
+//Modo estricto
+
+//Los estándares que rigen la forma en que se escribe JavaScript evolucionaron mucho más allá de lo que se consideró durante el diseño inicial del lenguaje. Cada cambio nuevo en el comportamiento esperado de JavaScript debe evitar causar errores en sitios web más antiguos.
+
+//ES5 aborda algunos problemas de larga data con la semántica de JavaScript sin romper las implementaciones existentes, ya que presenta el “modo estricto”, una forma de habilitar un conjunto más restrictivo de reglas de lenguaje para una secuencia de comandos completa o una función individual. Para habilitar el modo estricto, usa el literal de cadena "use strict", seguido de un punto y coma, en la primera línea de una secuencia de comandos o función:
+
+"use strict";
+function myFunction() {
+  "use strict";
+}
+
+//El modo estricto evita ciertas acciones "inseguras" o funciones obsoletas, arroja errores explícitos en lugar de los comunes "silenciosos" y prohíbe el uso de sintaxis que podrían colisionar con funciones futuras del lenguaje. Por ejemplo, las primeras decisiones de diseño en torno al alcance de las variables aumentaron la probabilidad de que los desarrolladores "contaminaran" por error el alcance global cuando declaraban una variable, independientemente del contexto que la contiene, omitiendo la palabra clave var:
+
+(function() {
+  mySloppyGlobal = true;
+}());
+
+mySloppyGlobal;
+> true
+
+//Los tiempos de ejecución de JavaScript modernos no pueden corregir este comportamiento sin correr el riesgo de dañar cualquier sitio web que lo use, ya sea por error o de forma deliberada. En cambio, el JavaScript moderno lo evita, ya que permite que los desarrolladores habiliten el modo estricto para el trabajo nuevo y lo habiliten de forma predeterminada solo en el contexto de las nuevas funciones del lenguaje en las que no se romperán las implementaciones heredadas:
+
+(function() {
+    "use strict";
+    mySloppyGlobal = true;
+}());
+> Uncaught ReferenceError: assignment to undeclared variable mySloppyGlobal
+
+//Debes escribir "use strict" como un literal de cadena. Un literal de plantilla (use strict) no funcionará. También debes incluir "use strict" antes de cualquier código ejecutable en el contexto previsto. De lo contrario, el intérprete lo ignora.
+
+(function() {
+    "use strict";
+    let myVariable = "String.";
+    console.log( myVariable );
+    sloppyGlobal = true;
+}());
+> "String."
+> Uncaught ReferenceError: assignment to undeclared variable sloppyGlobal
+
+(function() {
+    let myVariable = "String.";
+    "use strict";
+    console.log( myVariable );
+    sloppyGlobal = true;
+}());
+> "String." // Because there was code prior to "use strict", this variable still pollutes the global scope
+
+//Por referencia y por valor
+
+//Cualquier variable, incluidas las propiedades de un objeto, los parámetros de función y los elementos de un array, un conjunto o un mapa, puede contener un valor primitivo o un valor de referencia.
+
+//Cuando se asigna un valor primitivo de una variable a otra, el motor de JavaScript crea una copia de ese valor y se la asigna a la variable.
+
+//Cuando asignas un objeto (instancias de clase, arrays y funciones) a una variable, en lugar de crear una copia nueva de ese objeto, la variable contiene una referencia a la posición almacenada del objeto en la memoria. Por este motivo, cambiar un objeto al que hace referencia una variable cambia el objeto al que se hace referencia, no solo un valor que contiene esa variable. Por ejemplo, si inicializas una variable nueva con una variable que contiene una referencia de objeto y, luego, usas la variable nueva para agregar una propiedad a ese objeto, la propiedad y su valor se agregan al objeto original:
+
+const myObject = {};
+const myObjectReference = myObject;
+
+myObjectReference.myProperty = true;
+
+myObject;
+> Object { myProperty: true }
+
+//Esto es importante no solo para alterar objetos, sino también para realizar comparaciones estrictas, ya que la igualdad estricta entre objetos requiere que ambas variables hagan referencia a el mismo objeto para evaluarse como true. No pueden hacer referencia a objetos diferentes, incluso si esos objetos son estructuralmente idénticos:
+
+const myObject = {};
+const myReferencedObject = myObject;
+const myNewObject = {};
+
+myObject === myNewObject;
+> false
+
+myObject === myReferencedObject;
+> true
+
+//Asignación de memoria:
+
+//JavaScript usa la administración automática de memoria, lo que significa que no es necesario asignar o desasignar la memoria de forma explícita durante el desarrollo. Si bien los detalles de los enfoques de los motores de JavaScript para la administración de la memoria exceden el alcance de este módulo, comprender cómo se asigna la memoria proporciona un contexto útil para trabajar con valores de referencia.
+
+//Hay dos “áreas” en la memoria: la “pila” y el “montón”. La pila almacena datos estáticos (valores primitivos y referencias a objetos) porque la cantidad fija de espacio necesaria para almacenar estos datos se puede asignar antes de que se ejecute la secuencia de comandos. El montón almacena objetos, que necesitan espacio asignado de forma dinámica porque su tamaño puede cambiar durante la ejecución. La memoria se libera mediante un proceso llamado “recolección de elementos no utilizados”, que quita de la memoria los objetos sin referencias.
+
+//El subproceso principal
+
+//JavaScript es un lenguaje básicamente de subproceso único con un modelo de ejecución "síncrono", lo que significa que puede ejecutar solo una tarea a la vez. Este contexto de ejecución secuencial se denomina subproceso principal.
+
+//Otras tareas del navegador comparten el subproceso principal, como el análisis de HTML, la renderización y la renderización de nuevo de partes de la página, la ejecución de animaciones CSS y el control de las interacciones del usuario, desde las simples (como destacar texto) hasta las complejas (como interactuar con elementos de formulario). Los proveedores de navegadores encontraron formas de optimizar las tareas que realiza el subproceso principal, pero las secuencias de comandos más complejas aún pueden usar demasiados recursos del subproceso principal y afectar el rendimiento general de la página.
+
+//Algunas tareas se pueden ejecutar en subprocesos en segundo plano llamados Web Workers, con algunas limitaciones:
+
+//Los subprocesos de trabajo solo pueden actuar en archivos JavaScript independientes.
+//Tienen acceso muy reducido o nulo a la ventana del navegador y a la IU.
+//Se limitan en la forma en que pueden comunicarse con el subproceso principal.
+//Estas limitaciones las hacen ideales para tareas enfocadas y que requieren muchos recursos que, de otro modo, podrían ocupar el subproceso principal.
+
+//La pila de llamadas
+
+//La estructura de datos que se usa para administrar los "contextos de ejecución" (el código que se ejecuta de forma activa) es una lista llamada pila de llamadas (a menudo, solo "la pila"). Cuando se ejecuta una secuencia de comandos por primera vez, el intérprete de JavaScript crea un "contexto de ejecución global" y lo envía a la pila de llamadas, con sentencias dentro de ese contexto global que se ejecutan de a una, de arriba hacia abajo. Cuando el intérprete encuentra una llamada a función mientras ejecuta el contexto global, envía un "contexto de ejecución de la función" para esa llamada a la parte superior de la pila, pausa el contexto de ejecución global y ejecuta el contexto de ejecución de la función.
+
+//Cada vez que se llama a una función, el contexto de ejecución de la función para esa llamada se empuja a la parte superior de la pila, justo encima del contexto de ejecución actual. La pila de llamadas funciona según el principio "último en entrar, primero en salir", lo que significa que la llamada a función más reciente, que es la más alta en la pila, se ejecuta y continúa hasta que se resuelve. Cuando se completa esa función, el intérprete la quita de la pila de llamadas, y el contexto de ejecución que contiene esa llamada a función vuelve a ser el elemento más alto de la pila y reanuda la ejecución.
+
+//Estos contextos de ejecución capturan cualquier valor necesario para su ejecución. También establecen las variables y funciones disponibles dentro del alcance de la función según su contexto superior, y determinan y establecen el valor de la palabra clave this en el contexto de la función.
+
+//El bucle de eventos y la cola de devolución de llamada
+
+//Esta ejecución secuencial significa que las tareas asíncronas que incluyen funciones de devolución de llamada, como recuperar datos de un servidor, responder a la interacción del usuario o esperar a los temporizadores establecidos con setTimeout o setInterval, bloquearían el subproceso principal hasta que se complete esa tarea o interrumpirían de forma inesperada el contexto de ejecución actual en el momento en que se agregue el contexto de ejecución de la función de devolución de llamada a la pila. Para abordar este problema, JavaScript administra tareas asíncronas con un “modelo de simultaneidad” basado en eventos que consta del “bucle de eventos” y la “cola de devolución de llamada” (a veces, denominada “cola de mensajes”).
+
+//Cuando se ejecuta una tarea asíncrona en el subproceso principal, el contexto de ejecución de la función de devolución de llamada se coloca en la cola de devolución de llamada, no en la parte superior de la pila de llamadas. El bucle de eventos es un patrón que, a veces, se denomina reactor, que sondea de forma continua el estado de la pila de llamadas y la cola de devoluciones de llamada. Si hay tareas en la fila de devolución de llamada y el bucle de eventos determina que la pila de llamadas está vacía, las tareas de la fila de devolución de llamada se envían a la pila de a una a la vez para que se ejecuten.
 </script>
 </body>
 </html>

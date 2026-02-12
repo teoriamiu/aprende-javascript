@@ -1,8 +1,114 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>😶 ¡Cómo extender clases!</h2>
 <script>
-  
+Cómo extender clases
+
+La palabra clave extends se usa en declaraciones o expresiones de clase para crear un que actúa como una subclase de otra, con la clase superior (a veces llamada "clase básica") y funciona como prototipo de la clase secundaria (a veces, llamada “subclase”, o “clase derivada”).
+
+
+class ParentClass {}
+class ChildClass extends ParentClass {}
+
+Object.getPrototypeOf( ChildClass );
+> class ParentClass {}
+Estas subclases heredan las propiedades y los métodos de la clase superior. Esta te permite extender la funcionalidad principal de una clase para entregar contenido más específico sin sobrecargar la clase superior para adaptarla a todos los casos de uso posibles, o volver a implementar código con un propósito similar.
+
+Las clases secundarias pueden proporcionar sus propias implementaciones de los métodos heredados desde una clase superior:
+
+class MyClass {
+  constructor( myPassedValue ) {
+    this.instanceProp = myPassedValue;
+  }
+  classMethod() {
+    console.log( `The value was '${ this.instanceProp }.'`)
+  }
+}
+class ChildClass extends MyClass {
+  classMethod() {
+    console.log( `The value was '${ this.instanceProp },' and its type was '${ typeof this.instanceProp }.'`)
+  }
+}
+
+const myParentClassInstance = new MyClass( "My string." );
+const mySubclassInstance = new ChildClass( 100 );
+
+myParentClassInstance.classMethod();
+> "The value type was 'string.'"
+
+mySubclassInstance.classMethod();
+> "The value was '100,' and its type was 'number.'"
+También puedes llamar a métodos definidos en la clase superior en el contexto de la clase secundaria con super:
+
+class MyClass {
+  constructor( myPassedValue ) {
+    this.instanceProp = myPassedValue;
+  }
+  classMethod() {
+    console.log( `The value was '${ this.instanceProp }.'`)
+  }
+}
+
+class ChildClass extends MyClass {
+  subclassMethod() {
+    super.classMethod();
+    console.log( `The value type was '${ typeof this.instanceProp }.'`)
+  }
+}
+const mySubclassInstance = new ChildClass( 100 );
+
+mySubclassInstance.subclassMethod();
+> The value was '100.'
+> The value type was 'number.'
+Como se ve en los ejemplos anteriores, cuando el método constructor() se omite en el contexto de una clase secundaria, el constructor implícito de JavaScript llama al elemento superior junto con el mismo conjunto de argumentos. Sin embargo, si hay constructor en la subclase, primero debe llamar a super() junto con cualquier los argumentos necesarios antes de hacer referencia a this.
+
+class MyClass {
+  constructor( myPassedValue ) {
+    this.instanceProp = myPassedValue;
+  }
+  classMethod() {
+    console.log( `The value was '${ this.instanceProp }.'`)
+  }
+}
+
+class ChildClass extends MyClass {
+    constructor( myPassedValue ) {
+        super( myPassedValue );
+        this.modifiedProp = myPassedValue + 50;
+    }\
+    subclassMethod() {
+        super.classMethod();
+        console.log( `The value type was '${ typeof this.instanceProp }.'`)
+    }
+}
+const mySubclassInstance = new ChildClass( 100 );
+
+mySubclassInstance;
+> MyClass { instanceProp: 100, modifiedProp: 150 }
+Los métodos get y set son métodos especiales que se usan exclusivamente para recuperar y definir respectivamente. Los métodos definidos con las palabras clave get y set permiten creas métodos con los que se puede interactuar como si fueran estáticos propiedades.
+
+class MyClass {
+    constructor( originalValue ) {
+        this.totalValue = 0;
+    }
+    set doubleThisValue( newValue ) {
+        this.totalValue = newValue * 2;
+    }
+    get currentValue() {
+        console.log( `The current value is: ${ this.totalValue }` );
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass { totalValue: 0 }
+
+myClassInstance.doubleThisValue = 20;
+
+myClassInstance.currentValue;
+> The current value is: 40
+Las propiedades get y set se definen en la propiedad prototipo de la clase. y, por lo tanto, están disponibles para todas las instancias de la clase.
 </script>
 </body>
 </html>

@@ -1,8 +1,252 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>☺ ¡Esta palabra clave, ah rre!</h2>
 <script>
-  
+Esta palabra clave
+
+La palabra clave this hace referencia al valor del objeto que está vinculado a la función en el momento de su llamada, lo que significa que su valor es diferente según se llame a una función como método, como función independiente o como constructor.
+
+Cuando se llama a una función, se crea una instancia de la palabra clave this en segundo plano como una referencia al objeto que contiene esa función, lo que brinda acceso a las propiedades y métodos definidos junto con ella desde su alcance. Trabajar con this es similar, en algunos aspectos, a trabajar con una variable declarada con const. Al igual que una constante, this no se puede quitar ni reasignar su valor, pero se pueden alterar los métodos y las propiedades del objeto que contiene la palabra clave this.
+
+Vinculación global
+Fuera de una función o del contexto de un objeto, this hace referencia a la propiedad globalThis, que es una referencia al objeto global en la mayoría de los entornos de JavaScript. En el contexto de una secuencia de comandos que se ejecuta en un navegador web, el objeto global es el objeto window:
+
+
+this;
+> Window {0: Window, window: Window, self: Window, document: document, name: '', location: Location, ...}
+En Node.js, globalThis es el objeto global:
+
+
+$ node
+Welcome to Node.js v20.10.0.
+Type ".help" for more information.
+> this
+<ref *1> Object [global] {
+...
+}
+Fuera del modo estricto, this también se refiere al objeto global dentro de una función independiente, ya que el Window superior es el objeto que, en realidad, "posee" esas funciones.
+
+
+function myFunction() {
+    console.log( this );
+}
+myFunction();
+> Window {...}
+
+(function() {
+    console.log( this );
+}());
+> Window {...}
+Cuando se usa el modo estricto, this tiene un valor de undefined dentro de una función independiente:
+
+
+(function() {
+    "use strict";
+    console.log( this );
+}());
+> undefined
+Antes de la introducción del modo estricto, un valor null o undefined para this se reemplazaba por una referencia al objeto global. A veces, es posible que veas que la vinculación global se denomina "vinculación predeterminada" debido a este comportamiento heredado.
+
+Vinculación implícita
+Cuando se llama a una función como método de un objeto, una instancia de this dentro de ese método hace referencia al objeto que contiene el método, lo que permite acceder a los métodos y las propiedades que se encuentran junto a él:
+
+
+let myObject = {
+    myValue: "This is my string.",
+    myMethod() {
+            console.log( this.myValue );
+    }
+};
+
+myObject.myMethod();
+> "This is my string."
+Puede parecer que el valor de this depende de cómo se definen una función y su objeto envolvente. En su lugar, el contexto del valor de this es el contexto de ejecución actual. En este caso, el contexto de ejecución es que el objeto myObject llama al método myMethod, por lo que myObject es el valor de this. Esto puede parecer un tecnicismo en el contexto de los ejemplos anteriores, pero para los usos más avanzados de this, es una distinción esencial que debes tener en cuenta.
+
+En general, usa this de manera que no esperes que el código circundante tenga ninguna estructura en particular. La excepción a esta regla son las funciones flecha de ES5.
+
+this en funciones de flecha
+En las funciones flecha, this se resuelve en una vinculación en un entorno de cierre léxico. Esto significa que this en una función de flecha hace referencia al valor de this en el contexto más cercano de esa función:
+
+let myObject = {
+    myMethod() { console.log( this ); },
+    myArrowFunction: () => console.log( this ),
+    myEnclosingMethod: function () {
+        this.myArrowFunction = () => { console.log(this) };
+    }
+};
+
+myObject.myMethod();
+> Object { myMethod: myMethod(), myArrowFunction: myArrowFunction() }
+
+myObject.myArrowFunction();
+> Window {...}
+En el ejemplo anterior, myObject.myMethod() registra myObject como el objeto que “posee” ese método, pero myObject.myArrowFunction() muestra globalThis (o undefined), porque la instancia de this dentro de la función de flecha hace referencia al alcance de cierre más alto.
+
+En el siguiente ejemplo, myEnclosingMethod crea una función flecha en el objeto que la contiene cuando se ejecuta. La instancia de this dentro de la función flecha ahora hace referencia al valor de this dentro del entorno envolvente, que es el método que contiene esa función flecha. Debido a que el valor de this dentro de myEnclosingMethod hace referencia a myObject, después de definir la función de flecha, this dentro de la función de flecha también hace referencia a myObject:
+
+
+let myObject = {
+    myMethod() { console.log( this ); },
+    myEnclosingMethod: function () {
+        this.myArrowFunction = () => { console.log(this) };
+    }
+};
+
+myObject.myEnclosingMethod();
+myObject.myArrowFunction();
+> Object { myMethod: myMethod(), myArrowFunction: myArrowFunction() }
+Vinculación explícita
+La vinculación implícita controla la mayoría de los casos de uso para trabajar con this. Sin embargo, a veces es posible que necesites el valor de this para representar un contexto de ejecución específico, en lugar del contexto supuesto. Un ejemplo ilustrativo, aunque un poco desactualizado, es trabajar con this dentro de la función de devolución de llamada de un setTimeout, ya que esta devolución de llamada tiene un contexto de ejecución único:
+
+
+var myObject = {
+  myString: "This is my string.",
+  myMethod() {
+    console.log( this.myString );
+  }
+};
+myObject.myMethod();
+> "This is my string."
+
+setTimeout( myObject.myMethod, 100 );
+> undefined
+Si bien esta deficiencia específica de setTimeout se abordó con otras funciones, los problemas similares de "perder" this se abordaron anteriormente creando una referencia explícita al valor de this dentro del alcance del contexto previsto. En ocasiones, es posible que veas instancias de this asignadas a una variable con identificadores como that, self o _this en bases de código heredadas. Estas son convenciones de identificadores comunes para variables que contienen un valor this pasado.
+
+Cuando llamas a una función con los métodos call(), bind() o apply(), this hace referencia explícita al objeto al que se llama:
+
+
+let myFunction = function() {
+    console.log( this.myValue );
+}
+
+let myObject = {
+   "myValue" : "This is my string."
+ };
+
+myFunction.call( myObject );
+> "This is my string."
+
+var myObject = {
+  myString: "This is my string.",
+  myMethod() {
+    console.log( this.myString );
+  }
+};
+
+setTimeout( myObject.myMethod.bind( myObject ), 100 );
+> "This is my string."
+La vinculación explícita anula el valor this que proporciona la vinculación implícita.
+
+
+let myObject = {
+    "myValue" : "This string sits alongside myMethod.",
+    myMethod() {
+        console.log( this.myValue );
+    }
+};
+let myOtherObject = {
+    "myValue" : "This is a string in another object entirely.",
+};
+
+myObject.myMethod.call( myOtherObject );
+> "This is a string in another object entirely."
+Si se llama a una función de una manera que establezca el valor de this en undefined o null, ese valor se reemplaza por globalThis fuera del modo estricto:
+
+
+let myFunction = function() {
+    console.log( this );
+}
+
+myFunction.call( null );
+> Window {...}
+Del mismo modo, si se llama a una función de una manera que le daría a this un valor primitivo, ese valor se sustituye por el objeto del wrapper del valor primitivo fuera del modo estricto:
+
+
+let myFunction = function() {
+    console.log( this );
+}
+
+let myNumber = 10;
+
+myFunction.call( myNumber );
+> Number { 10 }
+En el modo estricto, un valor this pasado no se convierte a un objeto de ninguna manera, incluso si es un valor primitivo, null o undefined:
+
+
+"use strict";
+let myFunction = function() {
+    console.log( this );
+}
+
+let myNumber = 10;
+
+myFunction.call( myNumber );
+> 10
+
+myFunction.call( null );
+> null
+Vinculación de new
+Cuando se usa una clase como constructor con la palabra clave new, this hace referencia a la instancia recién creada:
+
+
+class MyClass {
+    myString;
+    constructor() {
+        this.myString = "My string.";
+    }
+    logThis() {
+        console.log( this );
+    }
+}
+const thisClass = new MyClass();
+
+thisClass.logThis();
+> Object { myString: "My string." }
+Del mismo modo, el valor de this dentro de una función de constructor llamada con new hace referencia al objeto que se está creando:
+
+
+function MyFunction() {
+  this.myString = "My string.";
+  this.logThis = function() {
+    console.log( this );
+  }
+}
+const myObject = new MyFunction();
+
+myObject.logThis();
+> Object { myString: "My string.", logThis: logThis() }
+Vinculación del controlador de eventos
+En el contexto de los controladores de eventos, el valor de this hace referencia al objeto que lo invoca. Dentro de la función de devolución de llamada de un controlador de eventos, eso significa que this hace referencia al elemento asociado con el controlador:
+
+
+let button = document.querySelector( "button" );
+
+button.addEventListener( "click", function( event ) { console.log( this ); } );
+Cuando un usuario interactúa con el button en el fragmento anterior, el resultado es el objeto del elemento que contiene el <button>:
+
+
+> Button {}
+Cuando se usa una función de flecha como devolución de llamada de objeto de escucha de eventos, el valor de this vuelve a ser proporcionado por el contexto de ejecución más cercano. En el nivel superior, eso significa que this dentro de una función de devolución de llamada del controlador de eventos es globalThis:
+
+
+let button = document.querySelector( "button" );
+
+button.addEventListener( "click", ( event ) => { console.log( this ); } );
+> undefined
+Al igual que con cualquier otro objeto, cuando usas los métodos call(), bind() o apply() para hacer referencia a la función de devolución de llamada de un objeto de escucha de eventos, this hace referencia al objeto de forma explícita:
+
+
+let button = document.querySelector( "button" );
+let myObject = {
+    "myValue" : true
+};
+function handleClick() {
+    console.log( this );
+}
+
+button.addEventListener( "click", handleClick.bind( myObject ) );
+> Object { myValue: true }
 </script>
 </body>
 </html>

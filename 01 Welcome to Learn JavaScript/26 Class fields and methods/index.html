@@ -1,8 +1,215 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🙄 ¡Campos y métodos de clase!</h2>
 <script>
-  
+Campos y métodos de clase
+
+Campos
+Los campos de clase se declaran directamente en el cuerpo de una clase, no de forma explícita. Se agregó como propiedad del valor this. Sin embargo, el resultado es el mismo: definida en instancias de esa clase.
+
+
+class MyClass {
+    myField;
+}
+
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass { myField: undefined }
+Puedes inicializar un campo con un valor. Este suele ser un valor predeterminado que lógica dentro de la clase puede reemplazar lo siguiente:
+
+
+class MyClass {
+    myResult = false;
+    set setValue( myValue ) {
+        this.myResult = myValue;
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> Object { myResult: false }
+
+myClassInstance.setValue = true;
+
+myClassInstance;\
+> Object { myResult: true }
+Los campos de clase son funcionalmente idénticos a las propiedades adjuntas a la clase. usando this. Esto significa que se puede acceder a ellas y modificarlas desde fuera del como a cualquier otra propiedad.
+
+
+class MyClass {
+    myField = true;
+}
+
+const myClassInstance = new MyClass();
+
+myClassInstance.myField;
+> true
+
+myClassInstance.myField = false;
+
+myClassInstance.myField;
+> false;
+Los campos proporcionan una base para algunas de las funciones más avanzadas de las clases.
+
+Campos privados y métodos
+No se puede acceder a los campos y métodos privados fuera de una clase. Un privado está asociada con una instancia de una clase, lo que significa que cada instancia contiene su propio conjunto de campos privados y métodos, como se define en la clase.
+
+Para hacer que una propiedad sea privada, agrega un # al comienzo del identificador cuando lo declaras:
+
+
+class MyClass {
+    #myPrivateField = true;
+    #myPrivateMethod() {}
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass { #myPrivateField: true }
+    #myPrivateField: true
+    <prototype>: Object { … }
+        constructor: class MyClass {}
+        <prototype>: Object { … }
+Se debe declarar un campo privado en el cuerpo de la clase que lo contiene. Puedes modificar su valor más adelante como una propiedad de this, pero no puedes crear el campo usando this.
+
+No se puede acceder a los campos privados desde ningún otro lugar de una secuencia de comandos. Esto evita que los datos propiedades se alteren fuera de los métodos get y set proporcionados interactuar con los valores que contienen y evita el acceso directo a destinados únicamente a usarse dentro de la propia clase.
+
+
+class MyClass {
+    #myResult = false;
+    set setValue( myValue ) {
+        this.#myResult = myValue;
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass { #myResult: false }
+
+myClassInstance.#myResult = true;
+> Uncaught SyntaxError: reference to undeclared private field or method #myResult
+
+myClassInstance.setValue = true;
+
+myClassInstance;\
+> MyClass { #myResult: true }
+Sin embargo, ten en cuenta que los navegadores las consolas para desarrolladores, por lo general, muy permisivo, aunque incoherentes, sobre permitir el acceso a campos privados para la depuración propósitos:
+
+
+class MyClass {
+    #myPrivateField = true;
+    #myPrivateMethod() {
+        console.log( "This is inside a private method." );
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass {#myPrivateField: true}
+
+myClassInstance.#myPrivateField;
+> true
+
+myClassInstance.#myPrivateMethod();
+> "This is inside a private method."
+
+class MyClass {
+    #myPrivateField = true;
+    #myPrivateMethod() {
+        console.log( "This is inside a private method." );
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance;
+> MyClass {#myPrivateField: true}
+
+myClassInstance.#myPrivateField;
+> Uncaught SyntaxError: reference to undeclared private field or method #myPrivateField
+
+myClassInstance.#myPrivateMethod();
+> Uncaught SyntaxError: reference to undeclared private field or method #myPrivateMethod
+Los campos privados tienen un alcance estricto para el cuerpo de la clase que los contiene. lo que significa que ni siquiera las clases secundarias pueden acceder a campos privados asociados con un clase superior:
+
+
+class MyClass {
+    #myPrivateField = true;
+}
+class ChildClass extends MyClass {
+    childMethod() {
+        console.log( this.#myPrivateField );
+    }
+}
+> Uncaught SyntaxError: reference to undeclared private field or method #myPrivateField
+Métodos y campos estáticos
+Los campos y métodos estáticos son miembros de una clase en sí, no de la instances de esa clase. Debido a esto, los campos estáticos proporcionan una punto para datos que no serán únicos para cada instancia de una clase, pero que esas que las instancias necesiten hacer referencia, por ejemplo, a información de configuración compartida. Los métodos estáticos suelen ser funciones de utilidad para trabajar con instancias de un , como comparar u ordenar las instancias con un campo que contengan.
+
+Para definir campos y métodos estáticos en el cuerpo de una clase, usa static. palabra clave:
+
+
+class MyClass {
+    static myStaticField;
+    static myStaticMethod() {}
+}
+const myClassInstance = new MyClass();
+También puedes usar la notación de puntos para crear un método estático:
+
+
+class MyClass {
+    constructor() {}
+}
+MyClass.myStaticMethod = function() {}
+No puedes acceder a propiedades estáticas desde una instancia de su clase, pero son disponibles en el constructor de clase:
+
+
+class MyClass {
+    static myStaticField = true;
+    static myStaticMethod() {
+        console.log( "A static method." );
+    }
+}
+const myClassInstance = new MyClass();
+
+myClassInstance.myStaticField;
+> undefined
+
+myClassInstance.myStaticMethod();
+> Uncaught TypeError: myClassInstance.myStaticMethod is not a function
+
+MyClass.myStaticField;
+> true
+
+MyClass.myStaticMethod();
+> "A static method."
+No son técnicamente necesarias, pero el uso de métodos estáticos es una práctica recomendada para crear utilidades para trabajar con instancias de una clase. Ejemplos de esto podrían incluyen un método estático dedicado a ordenar las instancias de una clase, o un tipo de fábrica que contenga cualquier configuración necesaria para crear una instancia de una y, luego, muestra la instancia de la clase:
+
+
+class User {
+    constructor( name, email ) {
+        this.name = name;
+        this.email = email;
+    }
+    static fromObject( myObject ) {
+        return new User( myObject.name, myObject.email ?? "Omitted" );
+    }
+}
+const userObject = {
+    "name" : "My Name",
+    "email" : "my@email.address"
+};
+const secondUserObject = {
+    "name" : "My Name"
+};
+
+const firstUser = User.fromObject( userObject );
+const secondUser = User.fromObject( secondUserObject );
+
+firstUser;
+> Object { name: "My Name", email: "my@email.address" }
+
+secondUser;
+> Object { name: "My Name", email: "Omitted" }
 </script>
 </body>
 </html>

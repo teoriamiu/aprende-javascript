@@ -1,8 +1,151 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🤔 ¡Descriptores de propiedades!</h2>
 <script>
-  
+Descriptores de propiedades
+
+Es probable que la mayor parte de tu interacción con las propiedades del objeto se realice a nivel de la superficie, lo que incluye la creación de literales de objetos, la configuración y el acceso los valores de las propiedades con claves. Sin embargo, puedes configurar de forma interna cualquier propiedad de un objeto para un control detallado sobre cómo se accede a esas propiedades alterados y definidos. Cada propiedad de objeto tiene un conjunto de atributos invisibles que contienen metadatos asociados con esa propiedad, llamada "propiedad descriptores”.
+
+Hay dos tipos de descriptores asociados con cualquier propiedad: descriptores de datos y descriptores de accesos. Un descriptor de datos incluye pares clave-valor que contienen el valor de una propiedad, sin importar si valor es grabable, configurable o enumerable. Los descriptores de acceso contienen que se ejecutan cuando se configura, cambia o accede a una propiedad.
+
+Propiedad	Tipo de descriptor	Valor predeterminado de
+Object.defineProperty()	Descripción
+[[Value]]	Datos	undefined	Contiene el valor de una propiedad.
+[[Writable]]	Datos	false	Determina si puedes cambiar el valor de la propiedad.
+[[Get]]	Acceso	undefined	La función get de la propiedad, que se ejecuta cuando el valor se accede a ella.
+[[Set]]	Acceso	undefined	La función set de la propiedad, que se ejecuta cuando el valor se configura o cambia la propiedad.
+[[Configurable]]	Ambos	false	Si es false, la propiedad no se puede borrar y su no se pueden cambiar. Si es false y [[Writable]] es true, el valor de la propiedad puede aún se modifiquen.
+[[Enumerable]]	Ambos	false	Si es true, puedes iterar en la propiedad con Bucles for...in o la estática Object.keys() .
+Cada una de estas propiedades usa la misma abreviatura que [[Prototype]], lo que indica de que no se puede acceder a estas propiedades directamente. En su lugar, usa el El método estático Object.defineProperty() para definir o modificar las propiedades de un . Object.defineProperty() acepta tres argumentos: el objeto sobre el que se debe actuar, la clave de propiedad que se creará o modificará y un objeto que contenga el descriptores asociados con la propiedad que se crea o modifica.
+
+De forma predeterminada, las propiedades creadas con Object.defineProperty() no se pueden escribir, enumerar ni configurar. Sin embargo, cualquier propiedad que crees ya sea como parte del literal del objeto o con la notación de puntos o corchetes que admiten escritura, que se pueden enumerar y configurar.
+
+
+const myObj = {};
+
+Object.defineProperty(myObj, 'myProperty', {
+  value: true,
+  writable: false
+});
+
+myObj.myProperty;
+> true
+
+myObj.myProperty = false;
+
+myObj.myProperty;
+> true
+Por ejemplo, cuando [[Writable]] tiene un valor false, intenta establecer un valor nuevo. de la propiedad asociada falla silenciosamente fuera del modo estricto y arroja un en el modo estricto:
+
+
+{
+    const myObj = {};
+
+    Object.defineProperty(myObj, 'myProperty', {
+    value: true,
+    writable: false
+    });
+
+    myObj.myProperty = false;
+    myObj.myProperty;
+}
+> true
+
+(function () {
+    "use strict";
+    const myObj = {};
+
+    Object.defineProperty(myObj, 'myProperty', {
+    value: true,
+    writable: false
+    });
+
+    myObj.myProperty = false;
+    myObj.myProperty;
+}());\
+> Uncaught TypeError: "myProperty" is read-only
+El uso eficaz de los descriptores es un concepto bastante avanzado, pero comprender la estructura interna de un objeto es esencial para entender las sintaxis involucradas en el trabajo con objetos de formas más comunes. Por ejemplo: estos conceptos entran en juego cuando se usa el método estático Object.create(), lo que te brinda un control detallado sobre cualquier prototipo adjunto al nuevo .
+
+Object.create() crea un objeto nuevo con un objeto existente como su para crear un prototipo. Esto permite que el nuevo objeto herede propiedades y métodos de otro definido por el usuario de la misma forma en que los objetos heredan propiedades de Prototipo Object integrado de JavaScript. Cuando invocas Object.create() con un objeto como argumento, se crea un objeto vacío con el objeto pasado como su prototipo.
+
+
+const myCustomPrototype = {
+  'myInheritedProp': 10
+};
+
+const newObject = Object.create( myCustomPrototype );
+
+newObject;
+> Object {  }
+<prototype>: Object { myInheritedProp: 10 }
+  myInheritedProp: 10
+  <prototype>: Object { … }
+Object.create puede tomar un segundo argumento que especifique propiedades propias para la un objeto recién creado con una sintaxis similar a Object.defineProperty(), es decir, un objeto que asigna claves a un conjunto de atributos del descriptor:
+
+
+const myCustomPrototype = {
+  'myInheritedProp': 10
+};
+
+const myObj = Object.create( myCustomPrototype, {
+        myProperty: {
+            value: "The new property value.",
+            writable: true,
+            configurable: true
+        }
+  });
+
+myObj;
+> Object { … }
+    myProperty: "The new property value."
+    <prototype>: Object { myInheritedProp: 10 }
+En este ejemplo, el objeto nuevo (myObj) usa un literal de objeto (myCustomPrototype) como prototipo, que, a su vez, contiene el prototipo Object.prototype, lo que da como resultado una serie de prototipos heredados llamados cadena de prototipos. Cada objeto tiene un prototipo, ya sea asignado o heredado, que tiene un prototipo propio asignado o heredado. Esta cadena termina en un Prototipo null, que no tiene ningún prototipo propio.
+
+
+const myPrototype = {
+  'protoProp': 10
+};
+
+const newObject = Object.setPrototypeOf( { 'objProp' : true }, myPrototype );
+
+newObject;
+> Object { objProp: true }
+    objProp: true
+    <prototype>: Object { protoProp: 10 }
+        protoProp: 10
+        <prototype>: Object { … }
+Las propiedades contenidas en el prototipo de un valor están disponibles en el "nivel superior". de un objeto, sin la necesidad de acceder directamente a la propiedad del prototipo:
+
+
+const objectLiteral = {
+    "value" : true
+};
+
+objectLiteral;
+> Object { value: true }
+    value: true
+    <prototype>: Object { … }
+
+objectLiteral.toString();
+"[object Object]"
+Este patrón se aplica a toda la cadena de prototipos asociada con un Cuando intenta acceder a una propiedad, el intérprete busca esa propiedad de cada "nivel" de la cadena del prototipo, de arriba abajo, hasta que encuentra la propiedad o la cadena finaliza:
+
+
+const myCustomPrototype = {
+  'protoProp': "Prototype property value."
+};
+
+const myObj = Object.create( myCustomPrototype, {
+    myProperty: {
+        value: "Top-level property value.",
+        writable: true,
+        configurable: true
+    }
+});
+
+myObj.protoProp;
+> "Prototype property value."
 </script>
 </body>
 </html>

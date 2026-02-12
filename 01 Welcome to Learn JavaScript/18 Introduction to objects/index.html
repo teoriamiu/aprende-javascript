@@ -1,8 +1,102 @@
 <!DOCTYPE html>
 <html>
 <body>
+<h2>🙂 ¡Objetos!</h2>
 <script>
-  
+Objetos
+
+Los objetos son un tipo de datos discretos de la misma forma que cada uno primitivo es un tipo de datos, con un estado diferencia: a diferencia de las primitivas, los objetos son mutables. Un objeto puede contener datos asociados con los identificadores, como una variable, pero mantiene sus datos de object sin importar los datos que contengan.
+
+Además de las primitivas, todos los valores de JavaScript son objetos, aunque los literales primitivos presentan un comportamiento similar al de objeto debido al herencia prototípica, es se suele decir que JavaScript está compuesto efectivamente de objetos.
+
+Un literal de objeto es un par de llaves que rodean cero o más pares clave-valor. llamada "propiedades", que puede contener cualquier valor de JavaScript.
+
+{
+    "myProperty" : true
+}
+Las claves de propiedad pueden ser cualquier símbolo o elemento cadena. Como cuando se asigna un identificador a una variable, las cadenas usadas como claves de propiedad deben ser predecibles descriptivos:
+
+let carAttributes = {
+    "color" : "red"
+};
+
+carAttributes
+> Object { color: "red" }
+Las claves de propiedad requieren un literal de string de una (') o comillas dobles ("), no un literal de plantilla:
+
+let carAttributes = {
+    `keyString` : false
+};
+> Uncaught SyntaxError: expected property name, got template literal
+Los valores de propiedad pueden ser de cualquier tipo de datos. Las propiedades de un objeto pueden contienen objetos con sus propias propiedades:
+
+let myObject = {
+    'key' : {
+        'subkey' : true,
+        'othersubkey' : false
+    }
+};
+
+myObject;
+> Object { key: Object { subkey: true, othersubkey: false } }
+Cuando el valor de una propiedad es una función, esa propiedad se denomina "método".
+
+const myObject = {
+    "myProperty" : true,
+    myMethod() {
+        console.log( "This is a method." );
+    }
+}
+
+myObject.myProperty;
+> true
+
+myObject.myMethod();
+> "This is a method."
+También puedes crear un objeto con la palabra clave new:
+
+let myObject = new Object();
+En los ejemplos anteriores, se asignaron los literales de objeto recién creados. en las variables. Esto no es necesario, porque como cualquier otro tipo de datos, puedes usar un objeto sin identificador en cualquier lugar donde se espere un objeto. Sin embargo, un el literal de objeto requiere paréntesis en cualquier contexto en el que pueda confundirse para una sentencia de bloque, dado que los dos comparten la sintaxis de llaves ({}). La inicialización de una variable nunca requiere esto.
+
+{ "value" : 2 }
+> Uncaught SyntaxError: unexpected token: ':'
+
+({ "value" : 2 })
+> Object { value: 2 }
+
+let valObj = { "value" : 2 };
+
+valObj;
+> Object { value: 2 }
+A diferencia de las primitivas, no hay una diferencia significativa en los resultados de la creación un objeto usando new Object() y creando un literal de objeto, ya que el resultado, en cualquier caso será un objeto con propiedades heredadas de Prototipo Object. Sin embargo, existe una diferencia práctica entre los dos sintaxis.
+
+La palabra clave new debe definir un objeto vacío que se complete con datos más tarde:
+
+let myObject = new Object();
+
+myObject.booleanValue = true;
+myObject.stringValue = "My string.";
+Un literal de objeto puede propagarse con datos cuando se crea:
+
+let myObject = {
+    'booleanValue' : true,
+    'stringValue' : "My string."
+};
+Aunque tiene poco uso práctico, new Object() se puede usar para convertir valores de datos en objetos de su tipo respectivo, como los que se muestran usando La palabra clave new junto con su constructor . Por ejemplo, lo siguiente es funcionalmente equivalente a new Number( 10 ):
+
+let myObject = new Object( 10 );
+
+myObject;
+> Number { 10 }
+Los valores null y undefined dan como resultado un objeto vacío, funcionalmente idéntico. para invocar new Object() sin proporcionar un argumento.
+
+Si pasas un literal de objeto a new Object() como argumento, se pasa el objeto literal sin cambiarlo:
+
+let myObject = new Object( { myValue : 10 } );
+
+myObject;
+> Object { myValue: 10 }
+Al igual que con el uso de constructores para valores básicos, el uso de constructores para objetos rara vez tiene beneficios en comparación con el uso de la notación literal de objetos. Incluso al crear objetos vacíos para propagarse con valores posteriormente, los desarrolladores tienden a favorecer literal, en aras de la simplicidad.
 </script>
 </body>
 </html>
